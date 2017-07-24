@@ -1,0 +1,62 @@
+@CHARSET "UTF-8";
+*{
+	padding:10;
+	margin:0;
+}
+body{
+	width:960px;
+	magrin:0 auto;
+	background:#fff;
+}
+#header{
+	
+	font-family:"Sans-serif";	
+	width:auto;
+	height:150px;
+	border:2px solid #ccc;
+	border-radius:15px;
+	margin:10px 0;
+}
+#header h1{
+	font-size:30px;
+    width:auto;
+	display:block;
+	height:60px;
+	background:url(remain empty for an pic) no-repeat;
+	/* dont forgot to add a picture here to be background*/
+}
+#header ul{
+	font-size:10px;
+	text-align:right;
+	padding:30px 50px 0 0;
+}
+#header ul li{
+	display:inline;
+}
+#header ul li a{
+	text-decoration:none;
+	color:#333;
+}
+#header ul li a:hover{/* hover mean when the pointer touch it, it change*/
+	text-decoration:underline;
+	color:#f33;
+}
+h2{font-size:14px;
+background:#eee;
+line-height:25px;
+text-indent:10px;/*make the text intent*/
+	
+}
+#footer{
+	clear:both;
+	width:auto;
+	height:60px;
+	border:2px solid #ccc;
+	border-radius:15px;
+	text-align:center;
+}
+#footer p{
+	font-size:12px;
+	letter-spacing:1px;
+	padding:2px 0 0 0;
+}
