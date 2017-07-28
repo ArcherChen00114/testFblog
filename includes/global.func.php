@@ -1,4 +1,4 @@
-<?php
+ <?php
 if (!defined('PWD')){
     exit('Access denied');;
 }//for safe
@@ -18,6 +18,16 @@ function alertBack($string){
     echo "<script type='text/javascript'>alert('$string');history.back();</script>";
         exit;
 }
+
+function location($string,$url){
+    if (!empty($string)){
+    echo "<script type='text/javascript'>alert('$string');location.href='$url';</script>";
+    exit;
+    }
+    else {
+        header('Location:'.$url);
+    }
+}
 /**
  * code() for produce random access code
  * @param number $width
@@ -25,8 +35,8 @@ function alertBack($string){
  * @param number $randomcode code number
  */
 function code($width=75,$height=25,$randomcode=4){
-    
     session_start();//make the code random
+    ob_clean();
     header("content-type: image/png");
     for ($i=0;$i<$randomcode;$i++){
         $nmsg.= dechex(mt_rand(0,15));
@@ -58,9 +68,22 @@ function code($width=75,$height=25,$randomcode=4){
     imagepng($img);//better make the png before output this image
     imagedestroy($img);//and destroy it after output it
 }
+
 function checkCode($code1,$code2){
-    if(!$code1==$code2){
-        alertBack('you did not enter right code');
+    if ($code1!==$code2){
+        alertBack('code wrong');
     }
 }
+function login_state(){
+    if (isset($_COOKIE['username'])){
+    alertBack('login state cant do that');
+    }
+}
+function unsetcookies(){
+    setcookie('username','',time()-1);
+    setcookie('uniqid','',time()-1);
+    session_destroy();
+    location(null,'newfile.php');
+}
+
 ?>

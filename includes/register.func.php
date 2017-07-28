@@ -52,6 +52,7 @@ function checkPassword($password,$ensurepassword,$minnum=6){
     return $password;
 }
 
+
 /**
  * @accesspublic
  * @param string $hint

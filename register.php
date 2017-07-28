@@ -7,11 +7,10 @@ header('Content-type:text/html charset=utf-8');
 //define a variable to decide which css it should choose
 define('SCRIPT','register');
 //judge if it is a submit
-
-mysqli_query($conn, "INSERT INTO user(tg_username) VALUES('reaper')")or 
-        die ('sql insert failed'.mysqli_error($conn));
-
+login_state();
 if ($_GET['action']=='register'){
+       global $conn;
+//     var_dump($conn);
 //     for safety you need to make sure the code is right
 //     if(!$_POST['code']==$_SESSION['code']){
 //         alertBack('you did not enter right code');
@@ -24,17 +23,64 @@ if ($_GET['action']=='register'){
         $clean['uniqid']=checkUniqid($_POST['uniqid'],$_SESSION['uniqid']);
         $clean['active']=sha1Uniqid();
         //active code for new user to active
-        echo 'your username is:'.$clean['userName']=checkUsername($_POST['username'],2,20).'<br />';
-        echo 'your password is:'.$clean['passWord']=checkPassword($_POST['password'], $_POST['ensurepassword']).'<br />';
-        echo 'your passwordhint is:'.$clean['passWordHint']=checkPasswordhint($_POST['passwordhint'],4,20).'<br />';
-        echo 'your passwordanswer is:'.$clean['passWordAnswer']=checkAnswer($clean['passWordHint'],$_POST['passwordanswer'], 4, 20).'<br />';
-        echo 'your sex is:'.$clean['sex']=$_POST['sex'].'<br />';
-        echo 'icon:'.$clean['icon']=$_POST['face'].'<br />';
-        echo 'your email is:'.$clean['email']=checkEmail($_POST['email'],6,40).'<br />';
-        echo 'your QQ is:'.$clean['QQ']=checkQQ($_POST['QQ']).'<br />';
+        'your username is:'.$clean['userName']=checkUsername($_POST['username'],2,20);
+        'your password is:'.$clean['passWord']=checkPassword($_POST['password'], $_POST['ensurepassword']);
+        'your passwordhint is:'.$clean['passWordHint']=checkPasswordhint($_POST['passwordhint'],4,20);
+        'your passwordanswer is:'.$clean['passWordAnswer']=checkAnswer($clean['passWordHint'],$_POST['passwordanswer'], 4, 20);
+        'your sex is:'.$clean['sex']=$_POST['sex'];
+        'icon:'.$clean['icon']=$_POST['face'];
+        'your email is:'.$clean['email']=checkEmail($_POST['email'],6,40);
+        $clean['email']=$_POST['email'];
+        'your QQ is:'.$clean['QQ']=checkQQ($_POST['QQ']);
         //add new user
-        mysqli_query($conn, "INSERT INTO user(tg_username) VALUES('{$clean['username']}") or die ('username submit failed');
-        exit;
+        is_user_repeat("select tg_username FROM user WHERE tg_username='{$clean['userName']}'", 'sorry, this user was used');
+//         if (fetch_array("select tg_username FROM user WHERE tg_username='{$clean['userName']}'")){
+//             alertBack("this username has used");
+//         }   //make sure a username will used by two users
+        if (fetch_array("select tg_username FROM user WHERE tg_email='{$clean['email']}'")){
+            alertBack("this email has used");
+        }//make sure user cant use same email more than one time
+
+        
+//         check if this username used before upload user info
+        mysqli_query($conn, "INSERT INTO user(tg_uniqid,
+                                              tg_active,
+                                              tg_password,
+                                              tg_username,
+                                              tg_answer,
+                                              tg_hint,
+                                              tg_qq,
+                                              tg_email,
+                                              tg_sex,
+                                              tg_face,
+                                              tg_register_date,
+                                              tg_last_logtime,
+                                              tg_last_ip
+                                              ) VALUES(
+                                              '{$clean['uniqid']}',
+                                              '{$clean['active']}',
+                                              '{$clean['passWord']}',
+                                              '{$clean['userName']}',
+                                              '{$clean['passWordAnswer']}',
+                                              '{$clean['passWordHint']}',
+                                              '{$clean['QQ']}',
+                                              '{$clean['email']}',
+                                              '{$clean['sex']}',
+                                              '{$clean['icon']}',
+                                              NOW(),
+                                              NOW(),
+                                              '{$_SERVER["REMOTE_ADDR"]}')
+                                              ");
+        
+
+        if (affected_rows()==1){
+            mysqli_close($conn);
+            location('congraduation, your submit successed','active.php?active='.$clean['active']);
+        }else{
+            mysqli_close($conn);
+            location('sorry, your submit failed','register.php');
+            
+        }
 }
 $_SESSION['uniqid']=$uniqid=sha1Uniqid();
 //could save in mysql, for confirmation of cookies
@@ -50,7 +96,8 @@ $_SESSION['uniqid']=$uniqid=sha1Uniqid();
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-CN">
 <head>
 <?php require 'includes/title.inc.php';?>
-<script type="text/javascript" src="js/face.js"></script>
+<script type="text/javascript" src="js/code.js"></script>
+<script type="text/javascript" src="js/register.js"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv="Content-Language" content="zh-CN" />
 <style type="text/css" media="all">
