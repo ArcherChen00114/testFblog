@@ -45,8 +45,8 @@ if ($_GET['action']=='register'){
 //         check if this username used before upload user info
         mysqli_query($conn, "INSERT INTO user(tg_uniqid,
                                               tg_active,
-                                              tg_password,
                                               tg_username,
+                                              tg_password,
                                               tg_answer,
                                               tg_hint,
                                               tg_qq,
@@ -59,8 +59,8 @@ if ($_GET['action']=='register'){
                                               ) VALUES(
                                               '{$clean['uniqid']}',
                                               '{$clean['active']}',
-                                              '{$clean['passWord']}',
                                               '{$clean['userName']}',
+                                              '{$clean['passWord']}',
                                               '{$clean['passWordAnswer']}',
                                               '{$clean['passWordHint']}',
                                               '{$clean['QQ']}',
@@ -102,7 +102,7 @@ $_SESSION['uniqid']=$uniqid=sha1Uniqid();
 <meta http-equiv="Content-Language" content="zh-CN" />
 <style type="text/css" media="all">
 </style>
-<!-- 其他文档头元素 -->
+<!-- 鍏朵粬鏂囨。澶村厓绱� -->
 <title>register page</title>
 </head>
 <body>
@@ -116,7 +116,7 @@ require 'includes/header.inc.php';
     <form method="post" action="register.php?action=register" name="register">
         <input type='hidden'  name='uniqid' value="<?php echo $uniqid ?>"/>
         <dl>
-            <dt>请认真填写以下内容</dt>
+            <dt>请认真输出以下信息</dt>
             <dd>username:<input type="text" name="username" class="text"/>(*)</dd>
             <dd>password:<input type="password" name="password" class="text"/>(*)</dd>
             <dd>ensure your password:<input type="password" name="ensurepassword" class="text"/>(*)</dd>

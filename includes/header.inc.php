@@ -12,7 +12,7 @@ Blog of a pathfinder
     <li><a href='newfile.php'>toppage</a></li>
     <?php 
     if (isset($_COOKIE['username'])){
-        echo '<li><a href="infocenter.php">'.$_COOKIE['username'].'\'infocenter</li>';
+        echo '<li><a href="infocenter.php">'.$_COOKIE['username'].'s\'infocenter</li>';
         echo "\n";}
         else {
         echo '<li><a href="register.php">register</a></li>';

@@ -41,23 +41,23 @@ function check_time($string){
     return $string;
 }
 function cookies($username,$uniqid,$time){//login cookies
-    setcookie('username','$username');
-    setcookie('uniqid','$uniqid');
+    setcookie('username',$username);
+    setcookie('uniqid',$uniqid);
     switch($time){
         case 0:
-            setcookie('username','$username');
-            setcookie('uniqid','$uniqid');
+            setcookie('username',$username);
+            setcookie('uniqid',$uniqid);
         case 1:  //for a day
-            setcookie('username','$username',time()+86400);
-            setcookie('uniqid','$uniqid',time()+86400);
+            setcookie('username',$username,time()+86400);
+            setcookie('uniqid',$uniqid,time()+86400);
             break;
         case 2:  //for a week
-            setcookie('username','$username',time()+(86400*7));
-            setcookie('uniqid','$uniqid',time()+(86400*7));
+            setcookie('username',$username,time()+(86400*7));
+            setcookie('uniqid',$uniqid,time()+(86400*7));
             break;
         case 3://for a month
-            setcookie('username','$username',time()+(86400*30));
-            setcookie('uniqid','$uniqid',time()+(86400*30));
+            setcookie('username',$username,time()+(86400*30));
+            setcookie('uniqid',$uniqid,time()+(86400*30));
             break;
             
     }

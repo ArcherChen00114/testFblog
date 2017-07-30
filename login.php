@@ -15,8 +15,8 @@ if ($_GET['action']=='login'){
     $clean['userName']=checkUsername($_POST['username'],2,20);
     $clean['passWord']=checkPassword($_POST['password'],6);
     $clean['time']=check_time($_POST['time']);
-    print_r($clean);//saved all info in array clean.
-    if(!!$rows = fetch_array("SELECT tg_username,tg_uniqid FROM user WHERE tg_username='{$clean['userName']}' AND tg_password='{$clean['passWord']}'AND tg_active='' LIMIT 1 ")){
+//     print_r($clean);//saved all info in array clean.
+    if(!!$rows = fetch_array("SELECT tg_username,tg_uniqid FROM user WHERE tg_username='{$clean['userName']}' AND tg_password='{$clean['passWord']}'AND tg_active=''")){
     echo 'log in';
     echo $rows[tg_username];
     echo $rows[tg_uniqid];
@@ -27,7 +27,8 @@ if ($_GET['action']=='login'){
     }else {
     mysqli_close($conn);
     session_destroy();
-    location('wrong username or password or unactivted', 'login.php');
+//     print_r($rows);
+//     location('wrong username or password or unactivted', 'login.php');
 }
 }
 ?>

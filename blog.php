@@ -7,9 +7,35 @@ header('Content-type:text/html charset=utf-8');
 //define a variable to decide which css it should choose
 define('SCRIPT','blog');
 //get info from sql as array
+if (isset($_GET['page'])){
+    $page=$_GET['page'];
+    if(empty($page)||$page<0||!is_numeric($page)){
+        $page=1;
+    }else{
+        $page=intval($page);
+    }
+    //what if the url change to strange thing, make
+    //this web hard to make error
+    //1.page should not smaller than 0
+    //2. it should be number
+    //3.it shuold not be empty
+    //4.larger than max page
+}else {
+    $page=1;
+}
+$num = num_rows(query("SELECT tg_id FROM user"));
 $pagesize=10;//set size;
+$pagenumber=($page-1)*10;
+if ($num==0){
+    $pageabsolute=1;
+}else{
+    $pageabsolute=ceil($page/$pagesize);
+}
+if ($page>$pageabsolute){
+    $page=$pageabsolute;
+}
 global $conn;
-$result=query("SELECT tg_username,tg_sex,tg_face FROM user ORDER BY tg_register_date DESC LIMIT 0,$pagesize;");
+$result=query("SELECT tg_username,tg_sex,tg_face FROM user ORDER BY tg_register_date DESC LIMIT $pagenumber,$pagesize;");
 //limit get info
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -47,8 +73,17 @@ blog friendlist
    <dd class='mail'>mail</dd>
    <dd class='gift'>gift</dd>
  <?php }?>
- <div id="page">
- 
+ <div id="page_num">
+   <ul>
+       <?php for ($i=0;$i<$pagenumber;$i++){
+       if ($page==$i){
+           echo '<li><a href="blog.php?page='.($i+1).'" class="selected">'.($i+1).'</a></li>';
+       }
+       else{
+       echo '<li><a href="blog.php?page='.($i+1).'">'.($i+1).'</a></li>';
+        }
+}?>
+   </ul>
  </div>
 </dl>
 </div>

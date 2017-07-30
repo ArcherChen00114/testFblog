@@ -49,7 +49,7 @@ function checkPassword($password,$ensurepassword,$minnum=6){
     if ($password!=$ensurepassword){
         alertBack('password should equal to ensureance password');
     }
-    return $password;
+    return sha1($password);
 }
 
 
