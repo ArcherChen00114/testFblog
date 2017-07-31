@@ -92,6 +92,10 @@
  *     member.php frame set up
  *     $clean did not get QQ and email
  *     fix problem of checkEmail()
+ *     -------8/1 1.00pm
+ *     should add tg_login_count in sql. SMALLINT 4
+ *     add recording in login.php, every time user login in
+ *     will send a record of lasttime log in and IP to SQL
  */    
  
 ?>

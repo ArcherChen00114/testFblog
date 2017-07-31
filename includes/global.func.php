@@ -79,6 +79,16 @@ function login_state(){
     alertBack('login state cant do that');
     }
 }
+/*
+ * compare uniqid 
+ * if not same alertback
+ */
+function _uniqid($mysqli_uniqid,$_COOKIES_uniqid){
+    if ($mysqli_uniqid!=$_COOKIES_uniqid){
+        alertBack('uniqid error');
+    }
+}
+
 function page($sql,$size){
     global $pagesize,$pagenumber,$pageabsolute,$page,$num;
     if (isset($_GET['page'])){

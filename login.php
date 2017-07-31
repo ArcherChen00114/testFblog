@@ -18,6 +18,14 @@ if ($_GET['action']=='login'){
 //     print_r($clean);//saved all info in array clean.
     if(!!$rows = fetch_array("SELECT tg_username,tg_uniqid FROM user WHERE tg_username='{$clean['userName']}' AND tg_password='{$clean['passWord']}'AND tg_active=''")){
     echo 'log in';
+    //login will send info to sql
+    query("UPDATE user SET 
+                          tg_last_time=NOW(),
+                          tg_last_ip='{$_SERVER["REMOTE_ADDR"]}',
+                          tg_login_count=tg_login_count+1
+                     WHERE
+                          tg_username='{$rows['tg_username']}'"
+                              );
     echo $rows[tg_username];
     echo $rows[tg_uniqid];
     mysqli_close($conn);

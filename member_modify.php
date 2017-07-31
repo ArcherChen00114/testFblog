@@ -9,12 +9,16 @@ define('SCRIPT','member_modify');
 //judge if it is a submit
 if($_GET['action']=='modify'){
     checkCode($_POST['code'], $_SESSION['code']);
+    if($rows =fetch_array("SELECT tg_uniqid FROM user WHERE tg_username='{$_COOKIE['username']}'")){
+    //compare unipid for safty
+    _uniqid($rows['tg_uniqid'], $_COOKIE['uniqid']);
     $clean=array ();
     $clean['passWord']=checkModifyPassword($_POST['password'],6);
     $clean['sex']=$_POST['sex'];
     $clean['icon']=$_POST['icon'];
     $clean['email']=checkEmail($_POST['email'],6,40);
     $clean['QQ']=checkQQ($_POST['QQ']);
+    }
     print_r($clean);
     //change info 
     if (empty($clean['password'])){
@@ -44,7 +48,7 @@ if($_GET['action']=='modify'){
         location('congraduation, your modify successed','member.php');
     }else{
         mysqli_close($conn);
-        location('sorry, your modify failed','member_modify.php');
+        location('sorry, nothing modified','member_modify.php');
     }
 }
 if (isset($_COOKIE['username'])){
