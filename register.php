@@ -7,7 +7,10 @@ header('Content-type:text/html charset=utf-8');
 //define a variable to decide which css it should choose
 define('SCRIPT','register');
 //judge if it is a submit
+login_state();
 if ($_GET['action']=='register'){
+       global $conn;
+//     var_dump($conn);
 //     for safety you need to make sure the code is right
 //     if(!$_POST['code']==$_SESSION['code']){
 //         alertBack('you did not enter right code');
@@ -27,48 +30,57 @@ if ($_GET['action']=='register'){
         'your sex is:'.$clean['sex']=$_POST['sex'];
         'icon:'.$clean['icon']=$_POST['face'];
         'your email is:'.$clean['email']=checkEmail($_POST['email'],6,40);
-        $clean['email']=$_POST['email'];//might be proble
+        $clean['email']=$_POST['email'];
         'your QQ is:'.$clean['QQ']=checkQQ($_POST['QQ']);
-        $query=mysqli_query($conn, "SELECT tg_username FROM tg_user WHERE tg_username='{$clean['userName']}'");
-        if (mysqli_fetch_array($query,MYSQL_ASSOC)){
-            alertBack('this username has registed');
-        }
         //add new user
-        $sql=mysqli_query($conn, "INSERT INTO user(
-                                         tg_uniqid,
-                                         tg_active,            
-                                         tg_username,
-                                         tg_password,
-                                         tg_answer,
-                                         tg_hint,
-                                         tg_qq,
-                                         tg_email,
-                                         tg_sex,
-                                         tg_face,
-                                         tg_register_date,
-                                         tg_last_logtime,
-                                         tg_last_ip
-                                         ) 
-                                   VALUES(
-                                         '{$clean['uniqid']}',
-                                         '{$clean['active']}',
-                                         '{$clean['userName']}',
-                                         '{$clean['passWord']}',
-                                         '{$clean['passWordAnswer']}',
-                                         '{$clean['passWordHint']}',
-                                         '{$clean['QQ']}',
-                                         '{$clean['email']}',
-                                         '{$clean['sex']}',
-                                         '{$clean['icon']}',
-                                         NOW(),
-                                         NOW(),
-                                         '{$_SERVER["REMOTE_ADDR"]}'
-                                          )" );
-        mysqli_close($conn);
-        // then jump to toppage
-        locationToppage('congralation', 'newfile.php');
+        is_user_repeat("select tg_username FROM user WHERE tg_username='{$clean['userName']}'", 'sorry, this user was used');
+//         if (fetch_array("select tg_username FROM user WHERE tg_username='{$clean['userName']}'")){
+//             alertBack("this username has used");
+//         }   //make sure a username will used by two users
+        if (fetch_array("select tg_username FROM user WHERE tg_email='{$clean['email']}'")){
+            alertBack("this email has used");
+        }//make sure user cant use same email more than one time
 
-}  
+        
+//         check if this username used before upload user info
+        mysqli_query($conn, "INSERT INTO user(tg_uniqid,
+                                              tg_active,
+                                              tg_username,
+                                              tg_password,
+                                              tg_answer,
+                                              tg_hint,
+                                              tg_qq,
+                                              tg_email,
+                                              tg_sex,
+                                              tg_face,
+                                              tg_register_date,
+                                              tg_last_logtime,
+                                              tg_last_ip
+                                              ) VALUES(
+                                              '{$clean['uniqid']}',
+                                              '{$clean['active']}',
+                                              '{$clean['userName']}',
+                                              '{$clean['passWord']}',
+                                              '{$clean['passWordAnswer']}',
+                                              '{$clean['passWordHint']}',
+                                              '{$clean['QQ']}',
+                                              '{$clean['email']}',
+                                              '{$clean['sex']}',
+                                              '{$clean['icon']}',
+                                              NOW(),
+                                              NOW(),
+                                              '{$_SERVER["REMOTE_ADDR"]}')
+                                              ");
+        
+
+        if (affected_rows()==1){
+            mysqli_close($conn);
+            location('congraduation, your submit successed','active.php?active='.$clean['active']);
+        }else{
+            mysqli_close($conn);
+            location('sorry, your submit failed','register.php');
+        }
+}
 $_SESSION['uniqid']=$uniqid=sha1Uniqid();
 //could save in mysql, for confirmation of cookies
 //MUST do this after submit, or uniqid will change
@@ -83,12 +95,13 @@ $_SESSION['uniqid']=$uniqid=sha1Uniqid();
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-CN">
 <head>
 <?php require 'includes/title.inc.php';?>
-<script type="text/javascript" src="js/face.js"></script>
+<script type="text/javascript" src="js/code.js"></script>
+<script type="text/javascript" src="js/register.js"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv="Content-Language" content="zh-CN" />
 <style type="text/css" media="all">
 </style>
-<!-- 其他文档头元素 -->
+<!-- 鍏朵粬鏂囨。澶村厓绱� -->
 <title>register page</title>
 </head>
 <body>
@@ -100,9 +113,9 @@ require 'includes/header.inc.php';
     register
     </h2>
     <form method="post" action="register.php?action=register" name="register">
-        <input type='hidden'  name='uniqid' value="<?php echo $uniqid ?>"/>
+        <input type='hidden' name='uniqid' value="<?php echo $uniqid ?>" />
         <dl>
-            <dt>请认真填写以下内容</dt>
+            <dt>请认真输出以下信息</dt>
             <dd>username:<input type="text" name="username" class="text"/>(*)</dd>
             <dd>password:<input type="password" name="password" class="text"/>(*)</dd>
             <dd>ensure your password:<input type="password" name="ensurepassword" class="text"/>(*)</dd>
@@ -112,8 +125,9 @@ require 'includes/header.inc.php';
             
             
             <dd class="face">faceicon:
-            <input type="hidden" name="face" value="face/01.jpg" id="face">
-            <img src="/face/01.jpg" alt="choose your icon" id="faceimg"/></dd>
+            <input type="hidden" name="face" value="face/001.jpg" id="face"/>
+            <img src="face/002.jpg" alt="choose your icon" id="faceimg"/>
+            </dd>
             
             
             

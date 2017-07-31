@@ -5,7 +5,6 @@ if (!defined('PWD')){
 if (!function_exists(alertBack)){
     exit('alertBack() does not exist');
 }
-
 /**
  *  
  * @param String $username
@@ -50,7 +49,17 @@ function checkPassword($password,$ensurepassword,$minnum=6){
     if ($password!=$ensurepassword){
         alertBack('password should equal to ensureance password');
     }
-    return $password;
+    return sha1($password);
+}
+function checkModifyPassword($password,$minnum=6){
+    if(!empty($password)){
+    if(strlen($password)<$minnum){
+        alertBack('password should longer than '.$minnum);
+    } else{
+        return null;
+    }
+    return sha1($password);
+   }
 }
 
 /**
@@ -94,18 +103,21 @@ function checkAnswer($hint,$answer,$minnum,$maxnum){
  * 
  * @param string $email
  */
-function checkEmail($email,$minnum,$maxnum){//'/^[\w\-\.]+@[\w\-\.]+(.com)$/
+function checkEmail($email,$minnum=7,$maxnum=20){//'/^[\w\-\.]+@[\w\-\.]+(.com)$/
     //^$ go to check the whole thing,\w means any number chars
+    if (empty($email)){
+        return null;
+    }else{
     if (!preg_match('/^[\w\-\.]+@[\w\-\.]+(\.\w+)$/', $email)){
         alertBack('illegal email');
     }
     if (mb_strlen($email)<$minnum || mb_strlen($email)>$maxnum){
         alertBack('email should not shorter than '.$minnum.'or longer then'
             .$maxnum);
-    return $email;
     }
+    return $email;
+  }
 }
-
 /**
  * @access public
  * @param  int $QQ

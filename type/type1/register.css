@@ -41,10 +41,10 @@ position:relative;
 }
 
 #register dl dd input.code{
-	width:60px;
+	width:40px;
 }
 #register dl dd input.submit{
-	width:60px;
+	width:40px;
 	height:19px;
 	border:1px dashed #333;
 	background:#fff;

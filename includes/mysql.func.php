@@ -45,7 +45,12 @@ function is_user_repeat($sql,$info){
         alertBack($info);
     }
 }
-
+function num_rows($sql){
+    return mysqli_num_rows($sql);
+}
+function free($result){
+    mysqli_free_result($result);
+}
 function affected_rows(){
     global $conn;
     return mysqli_affected_rows($conn);

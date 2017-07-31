@@ -24,12 +24,12 @@ require 'includes/common.inc.php';
   </h3>
   <dl>
   <?php foreach (range(1,9) as $num){ //for($i=0;$i<10;$i++){ ?>
-    <dd><img src="face/0<?php echo $num?>.jpg" alt="face/0<?php echo $num?>.jpg" title="icon<?php echo $num ?>" onclick="_opener(this.src)"/></dd>
+    <dd><img src="face/00<?php echo $num?>.jpg" alt="face/00<?php echo $num?>.jpg" title="icon<?php echo $num ?>" onclick="_opener(this.src)"/></dd>
   <?php     }?>
   </dl>
   <dl>
-  <?php foreach (range(10,64) as $num){ //for($i=0;$i<10;$i++){ ?>
-    <dd><img src="face/<?php echo $num?>.jpg" alt="face/<?php echo $num?>.jpg" title="icon<?php echo $num ?>" onclick="_opener(this.src)"/></dd>
+  <?php foreach (range(10,99) as $num){ //for($i=0;$i<10;$i++){ ?>
+    <dd><img src="face/0<?php echo $num?>.jpg" alt="face/0<?php echo $num?>.jpg" title="icon<?php echo $num ?>" onclick="_opener(this.src)"/></dd>
   <?php     }?> 
   </dl>
 </div>

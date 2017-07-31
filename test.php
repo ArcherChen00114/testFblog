@@ -1,5 +1,4 @@
 <?php
-$username=wobuzhida;
-echo mb_strlen($username,'utf-8')
-
+require 'includes/global.func.php';
+checkCode(dead, ok);
 ?>

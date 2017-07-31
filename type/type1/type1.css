@@ -45,7 +45,47 @@ h2{font-size:14px;
 background:#eee;
 line-height:25px;
 text-indent:10px;/*make the text intent*/
-	
+}
+#page_num{
+	height:20px;
+	clear:both;
+	padding:10px 0 0 0;
+	position:relative;
+}
+#page_num ul{
+	postion:abosolute;
+	height:20px;
+	right:10px;
+}
+#page_num ul li{
+	float:left;
+	width:20px;
+	height:20px;
+}
+#page_num ul li a{
+	display:block;
+	width:20px;
+	height:20px;	
+	line-height:20px;
+	border:1px solid #333;
+	text-align:center;
+	text-decoration:none;
+}
+#page_num ul li a:hover,#page_num ul li a.selected{
+	background:#666;
+	gont-weight:bold;
+	color:#fff;
+}
+#page_text{
+	height:20px;
+	clear:both;
+	padding:10px 0;
+}
+#page_text ul{
+	text-align:center;
+}
+#page_text ul li{
+	display:inline;
 }
 #footer{
 	clear:both;

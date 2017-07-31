@@ -1,4 +1,4 @@
-<?php
+ <?php
 if (!defined('PWD')){
     exit('Access denied');;
 }//for safe
@@ -18,9 +18,15 @@ function alertBack($string){
     echo "<script type='text/javascript'>alert('$string');history.back();</script>";
         exit;
 }
-function locationToppage($string,$url){
+
+function location($string,$url){
+    if (!empty($string)){
     echo "<script type='text/javascript'>alert('$string');location.href='$url';</script>";
     exit;
+    }
+    else {
+        header('Location:'.$url);
+    }
 }
 /**
  * code() for produce random access code
@@ -29,8 +35,8 @@ function locationToppage($string,$url){
  * @param number $randomcode code number
  */
 function code($width=75,$height=25,$randomcode=4){
-    
     session_start();//make the code random
+    ob_clean();
     header("content-type: image/png");
     for ($i=0;$i<$randomcode;$i++){
         $nmsg.= dechex(mt_rand(0,15));
@@ -62,9 +68,110 @@ function code($width=75,$height=25,$randomcode=4){
     imagepng($img);//better make the png before output this image
     imagedestroy($img);//and destroy it after output it
 }
+
 function checkCode($code1,$code2){
-    if(!$code1==$code2){
-        alertBack('you did not enter right code');
+    if ($code1!==$code2){
+        alertBack('code wrong');
     }
+}
+function login_state(){
+    if (isset($_COOKIE['username'])){
+    alertBack('login state cant do that');
+    }
+}
+function page($sql,$size){
+    global $pagesize,$pagenumber,$pageabsolute,$page,$num;
+    if (isset($_GET['page'])){
+        $page=$_GET['page'];
+        if(empty($page)||$page<0||!is_numeric($page)){
+            $page=1;
+        }else{
+            $page=intval($page);
+        }
+        //what if the url change to strange thing, make
+        //this web hard to make error
+        //1.page should not smaller than 0
+        //2. it should be number
+        //3.it shuold not be empty
+        //4.larger than max page
+    }else {
+        $page=1;
+    }
+    $num = num_rows(query($sql));
+    $pagesize=$size;//set size by input value;
+    $pagenumber=($page-1)*10;
+    if ($num==0){
+        $pageabsolute=1;
+    }else{
+        $pageabsolute=ceil($page/$pagesize);
+    }
+    if ($page>$pageabsolute){
+        $page=$pageabsolute;
+    }
+}
+/*
+ * make paging to function,show the page number to switch between pages
+ * 
+ */
+function paging($type){
+    global $page;
+    global $pageabsolute;
+    global $pagenumber;
+    global $num;
+    if($type==1){
+      echo '<div id="page_num">';
+      echo '<ul>';
+        for ($i=0;$i<$pagenumber;$i++){
+            if ($page==$i){
+            echo '<li><a href="'.SCRIPT.'.php?page='.($i+1).'" class="selected">'.($i+1).'</a></li>';
+            }
+            else{
+            echo '<li><a href="'.SCRIPT.'.php?page='.($i+1).'">'.($i+1).'</a></li>';
+            }
+        }
+      echo '</ul>';
+      echo '</div>';
+    }elseif($type==2){
+        echo '<div id="page_text">';
+        echo '<ul>';
+        echo '<li>'.$page.'/'.$pageabsolute.'page|</li>';
+        echo '<li><strong>'.$num.'</strong>users|</li>';
+    if ($page==1){
+        echo '<li>toppage|</li>';
+        echo '<li>uppage|</li>';
+    }else{
+        echo '<li><a href="'.SCRIPT.'.php">toppage</a>|</li>';
+        echo '<li><a href="'.SCRIPT.'.php?page='.($page-1).'">uppage</a>|</li>';
+    }
+    if($page==$pageabsolute){
+        echo '<li>pagedown|</li>';
+        echo '<li>lastpage|</li>';
+    } else {
+        echo '<li><a href="'.SCRIPT.'.php?page='.($page+1).'">pagedown|</a></li>';
+        echo '<li><a href="'.SCRIPT.'.php?page='.$pageabsolute.'">lastpage|</a></li>';
+    } 
+  echo '</ul>';
+echo '</div>';
+    }
+}
+function unsetcookies(){
+    setcookie('username','',time()-1);
+    setcookie('uniqid','',time()-1);
+    session_destroy();
+    location(null,'newfile.php');
+}
+/*
+ * html() to make string show HTML.
+ * 
+ */
+function htmls($string){
+    if (is_array($string)){
+        foreach($string as $key => $value){
+            $string[key]=htmls($value);//use itself to get htmlSCs
+        }
+    }else{
+        htmlspecialchars($string);
+    }
+    return $string;
 }
 ?>

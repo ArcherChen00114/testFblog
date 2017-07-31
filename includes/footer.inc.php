@@ -2,7 +2,6 @@
 if (!defined('PWD')){
     exit('Access denied');
 }
-mysqli_close($conn);
 ?>
 <div id="footer">
 <p>help</p>
