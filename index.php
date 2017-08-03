@@ -92,10 +92,33 @@
  *     member.php frame set up
  *     $clean did not get QQ and email
  *     fix problem of checkEmail()
- *     -------8/1 1.00pm
+ *     -------8/1 1.00am
  *     should add tg_login_count in sql. SMALLINT 4
  *     add recording in login.php, every time user login in
  *     will send a record of lasttime log in and IP to SQL
+ * 1.5 now we move to 1.5
+ *     -------8/1 14:15
+ *     3 bugs fixed
+ *     message.php set up, able to send, tested
+ *     make up message box
+ *     type1.css does not show affection on member_message.php
+ *     please test it later
+ *     build a new sql chart 'message'
+ *     tg_id mediumint(8),tg_touser varchar(20),tg_fromuser varchar(20)
+ *     tg_content varchar(200),tg_date datetime
+ *     T=>材料=>O=>战术=>U=>军火=>C=>任务=>H=>布阵=>A=>休息=>K=>收藏=>A=>远行
+ *     i30
+ *     ----------------8/2 14:58
+ *     message-detail.php,and delete message
+ *     js file of message_detail does not work, should have
+ *     detail.func.php as back up to make those function work
+ *     or add onclick on those <dd> to do delete this way may work
+ *     add the function to delete a punch of checked message
+ *     and add a button to check mutiple message
+ *     add tg_state tinyint(1) into message 0 means not readed
+ *     ---------------8/3 11:05
+ *     able to show how many message not read yet
+ *     js file of friend window did not test yet
  */    
  
 ?>

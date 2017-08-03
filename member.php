@@ -2,13 +2,24 @@
 session_start();
 define('PWD',537238);
 require 'includes/common.inc.php';
-include 'includes/register.func.php';
+include 'includes/check.func.php';
 header('Content-type:text/html charset=utf-8');
 //define a variable to decide which css it should choose
 define('SCRIPT','member');
 //judge if it is a submit
 if (isset($_COOKIE['username'])){
-    $rows=fetch_array("SELECT tg_username,tg_sex,tg_face,tg_email,tg_qq,tg_level,tg_register_date FROM user WHERE tg_username='{$_COOKIE['username']}'");
+    $rows=fetch_array("SELECT 
+                             tg_username,
+                             tg_sex,
+                             tg_face,
+                             tg_email,
+                             tg_qq,
+                             tg_level,
+                             tg_register_date
+                      FROM 
+                             user 
+                      WHERE 
+                             tg_username='{$_COOKIE['username']}'");
 if($rows){
     $html=array();
     $html['username']=htmls($rows['tg_username']);
@@ -17,11 +28,15 @@ if($rows){
     $html['email']=htmls($rows['tg_email']);
     $html['QQ']=htmls($rows['tg_qq']);
     $html['register_date']=htmls($rows['tg_register_date']);
+    $html=htmls($html);
+    
     switch($rows['tg_level']){
-        case 0:$html['level']="normal account";
+        case 0:
+        $html['level']="normal account";
         break;
         case1:
         $html['level']='administer';
+        break;
         default:
         $html['level']='error';
     }

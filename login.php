@@ -20,7 +20,7 @@ if ($_GET['action']=='login'){
     echo 'log in';
     //login will send info to sql
     query("UPDATE user SET 
-                          tg_last_time=NOW(),
+                          tg_last_logtime=NOW(),
                           tg_last_ip='{$_SERVER["REMOTE_ADDR"]}',
                           tg_login_count=tg_login_count+1
                      WHERE

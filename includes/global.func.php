@@ -19,6 +19,11 @@ function alertBack($string){
         exit;
 }
 
+function alertClose($string){
+    echo "<script type='text/javascript'>alert('$string');window.close();</script>";
+        exit;
+}
+
 function location($string,$url){
     if (!empty($string)){
     echo "<script type='text/javascript'>alert('$string');location.href='$url';</script>";
@@ -88,7 +93,6 @@ function _uniqid($mysqli_uniqid,$_COOKIES_uniqid){
         alertBack('uniqid error');
     }
 }
-
 function page($sql,$size){
     global $pagesize,$pagenumber,$pageabsolute,$page,$num;
     if (isset($_GET['page'])){
@@ -171,6 +175,15 @@ function unsetcookies(){
     location(null,'newfile.php');
 }
 /*
+ * get a length of string
+ */
+function title($string){
+    if (mb_strlen($string,'utf-8')>14){
+        $string=mb_substr($string,0,14,'utf-8');
+    }
+    return $string;
+}
+/*
  * html() to make string show HTML.
  * 
  */
@@ -183,5 +196,22 @@ function htmls($string){
         htmlspecialchars($string);
     }
     return $string;
+}
+
+function mysqli_string($string){
+    global $conn;
+    if (is_array($string)){
+        foreach($string as $key => $value){
+            $string[key]=mysqli_string($value);//use itself to get htmlSCs
+        }
+    }else{
+        mysqli_real_escape_string($conn,$string);
+    }
+    return $string;
+}
+
+function _session_destory(){
+    if (session_start()){
+        session_destroy();}
 }
 ?>

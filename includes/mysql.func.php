@@ -19,7 +19,7 @@ function set_names(){
 }
 // mysqli_query($conn, "INSERT INTO user(tg_username) VALUES('qwe537238')")
 // or die ('error'.mysqli_error($conn));
-$sql="select tg_username as query FROM user WHERE tg_username ='log1024'";
+// $sql="select tg_username as query FROM user WHERE tg_username ='log1024'";
 function query($sql){
     global $conn;
     global $query;

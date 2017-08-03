@@ -24,6 +24,10 @@
 	margin:0 auto;
 	display:block;
 }
+#blog dl dd a{
+	text-decoration:none;
+	color:#333;
+}
 #blog dl dd{
 	
 	text-align:center;

@@ -18,7 +18,7 @@ define('SCRIPT','member');
    </dl>
    <dl>
      <dt>other manage</dt>
-       <dd><a href="">message</a></dd>
+       <dd><a href="member_message.php">message</a></dd>
        <dd><a href="">friends</a></dd>
        <dd><a href="">flowers</a></dd>
        <dd><a href="">personal photo</a></dd>

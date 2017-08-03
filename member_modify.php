@@ -2,14 +2,19 @@
 session_start();
 define('PWD',537238);
 require 'includes/common.inc.php';
-include 'includes/register.func.php';
+include 'includes/check.func.php';
 header('Content-type:text/html charset=utf-8');
 //define a variable to decide which css it should choose
 define('SCRIPT','member_modify');
 //judge if it is a submit
 if($_GET['action']=='modify'){
     checkCode($_POST['code'], $_SESSION['code']);
-    if($rows =fetch_array("SELECT tg_uniqid FROM user WHERE tg_username='{$_COOKIE['username']}'")){
+    if(!!$rows =fetch_array("SELECT
+                                   tg_uniqid 
+                             FROM 
+                                   user 
+                             WHERE 
+                                  tg_username='{$_COOKIE['username']}'")){
     //compare unipid for safty
     _uniqid($rows['tg_uniqid'], $_COOKIE['uniqid']);
     $clean=array ();
@@ -25,9 +30,9 @@ if($_GET['action']=='modify'){
 
         query("UPDATE user SET
             tg_sex='{$clean['sex']}',
-            tg_face='{$clean['face']}',
+            tg_face='{$clean['icon']}',
             tg_email='{$clean['email']}',
-            tg_qq='{$clean['qq']}'
+            tg_qq='{$clean['QQ']}'
             WHERE
             tg_username='{$_COOKIE['username']}'"
         );
@@ -37,7 +42,7 @@ if($_GET['action']=='modify'){
                               tg_sex='{$clean['sex']}',
                               tg_face='{$clean['face']}',
                               tg_email='{$clean['email']}',
-                              tg_qq='{$clean['qq']}'
+                              tg_qq='{$clean['QQ']}'
                          WHERE
                               tg_username='{$_COOKIE['username']}'"
                               );
@@ -50,6 +55,7 @@ if($_GET['action']=='modify'){
         mysqli_close($conn);
         location('sorry, nothing modified','member_modify.php');
     }
+    
 }
 if (isset($_COOKIE['username'])){
     $rows=fetch_array("SELECT tg_username,tg_sex,tg_face,tg_email,tg_qq,tg_level,tg_register_date FROM user WHERE tg_username='{$_COOKIE['username']}'");

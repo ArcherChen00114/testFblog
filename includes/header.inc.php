@@ -2,6 +2,7 @@
 if (!defined('PWD')){
     exit('Access denied');;
 }
+global $message_html;
 ?>
 <div id="header">
 <h1>
@@ -12,7 +13,7 @@ Blog of a pathfinder
     <li><a href='newfile.php'>toppage</a></li>
     <?php 
     if (isset($_COOKIE['username'])){
-        echo '<li><a href="member.php">'.$_COOKIE['username'].'s\'infocenter</li>';
+        echo '<li><a href="member.php">'.$_COOKIE['username'].'s\'infocenter</a>'.$message_html.'</li>';
         echo "\n";}
         else {
         echo '<li><a href="register.php">register</a></li>';

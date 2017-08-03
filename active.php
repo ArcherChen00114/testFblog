@@ -1,7 +1,7 @@
 <?php
 define('PWD',537238);
 require 'includes/common.inc.php';
-include 'includes/register.func.php';
+include 'includes/check.func.php';
 header('Content-type:text/html charset=utf-8');
 //define a variable to decide which css it should choose
 define('SCRIPT','active');
@@ -11,7 +11,11 @@ if (!$_GET['active']){
     exit('illegal');
 }
 if (isset($_GET['action'])&&isset($_GET['active'])&& $_GET['action']=='ok'){
-   if(fetch_array("SELECT tg_active FROM user WHERE tg_active='{$_GET['active']}'LIMIT 1")){
+   if(fetch_array("SELECT
+                         tg_active 
+                         FROM user 
+                         WHERE tg_active='{$_GET['active']}'
+                         LIMIT 1")){
        query("UPDATE user SET tg_active=NULL WHERE tg_active='{$_GET['active']}' LIMIT 1");
        if (affected_rows()==1){
            mysqli_close($conn);

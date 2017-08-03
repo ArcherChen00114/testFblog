@@ -153,5 +153,11 @@ function sha1Uniqid(){
     return sha1(uniqid(rand(),true));
 }
 
+function checkContent($string){
+if (mb_strlen($string)<10 || mb_strlen($string)>200){
+        alertBack('message should not short than 10 or longer than 200');
+    }
+    return $string;
+}
 
 ?>

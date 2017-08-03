@@ -2,7 +2,7 @@
 session_start();
 define('PWD',537238);
 require 'includes/common.inc.php';
-include 'includes/register.func.php';
+include 'includes/check.func.php';
 header('Content-type:text/html charset=utf-8');
 //define a variable to decide which css it should choose
 define('SCRIPT','register');
