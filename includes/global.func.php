@@ -93,11 +93,80 @@ function _uniqid($mysqli_uniqid,$_COOKIES_uniqid){
         alertBack('uniqid error');
     }
 }
+
+function _setXml($xmlfile,$clean){
+    $fp=@fopen($xmlfile, 'w');
+    if (!$fp){
+        exit ('error, file does not exist');
+    }
+    flock ($fp,LOCK_EX);
+    $string="<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n";
+    fwrite($fp,$string,strlen($string));
+    $string="<vip>\r\n";
+    fwrite($fp,$string,strlen($string));
+    $string="\t<id>{$clean['id']}</id>\r\n";
+    fwrite($fp,$string,strlen($string));
+    $string="\t<username>{$clean['userName']}</username>\r\n";
+    fwrite($fp,$string,strlen($string));
+    $string="\t<sex>{$clean['sex']}</sex>\r\n";
+    fwrite($fp,$string,strlen($string));
+    $string="\t<face>{$clean['icon']}</face>\r\n";
+    fwrite($fp,$string,strlen($string));
+    $string="\t<email>{$clean['email']}</email>\r\n";
+    fwrite($fp,$string,strlen($string));
+    $string="\t<QQ>{$clean['QQ']}</QQ>\r\n";
+    fwrite($fp,$string,strlen($string));
+    $string="</vip>\r\n";
+    fwrite($fp,$string,strlen($string));
+    flock($fp,LOCK_UN);
+    fclose($fp);
+}
+
+function ubb($string){
+    $string=nl2br($string);
+    $string=preg_replace('/\[size=(.*)\](.*)\[\size\]/U','<span style="font-szie:=\1px">\2</span>', $string);
+    $string=preg_replace('/\[b\](.*)\[\b\]/U','<strong>\1</strong>', $string);
+    $string=preg_replace('/\[i\](.*)\[\i\]/U','<em>\1</em>', $string);
+    $string=preg_replace('/\[u\](.*)\[\u\]/U','<span style="text-decoration:underline>\1</span>', $string);
+    $string=preg_replace('/\[s\](.*)\[\s\]/U','<span style="text-decoration:line-through>\1</span>', $string);
+    $string=preg_replace('/\[color=(.*)\](.*)\[\/color\]/U','<span style="color:\1">\2</span>', $string);
+    $string=preg_replace('/\[url\](.*)\[\url\]/U','<a href="\1" target="_blanl">\1</a>', $string);
+    $string=preg_replace('/\[email\](.*)\[\email\]/U','<a href="mailto:\1" target="_blank">\1</a>', $string);
+    $string=preg_replace('/\[ima\](.*)\[\img\]/U','<img src="\1" alt="image" />', $string);
+    $string=preg_replace('/\[flash\](.*)\[\flash\]/U','<embed style="width:480px;height:400px;" src="\1" />', $string);
+    return $string;
+}
+
+function _getXML($xmlfile){
+    $html=array();
+    if(file_exists($xmlfile)){
+        $xml=file_get_contents($xmlfile);
+        preg_match_all('/<vip>(.*)<\/vip>/s',$xml,$dom);
+        foreach($dom[1] as $value){
+            preg_match_all('/<id>(.*)<\/id>/s',$value,$id);
+            preg_match_all('/<username>(.*)<\/username>/s',$value,$username);
+            preg_match_all('/<sex>(.*)<\/sex>/s',$value,$sex);
+            preg_match_all('/<face>(.*)<\/face>/s',$value,$face);
+            preg_match_all('/<email>(.*)<\/email>/s',$value,$email);
+            preg_match_all('/<QQ>(.*)<\/QQ>/s',$value,$QQ);
+            $html['id']=$id[1][0];
+            $html['username']=$username[1][0];
+            $html['sex']=$sex[1][0];
+            $html['face']=$face[1][0];
+            $html['email']=$email[1][0];
+            $html['QQ']=$QQ[1][0];
+        }
+    } else {
+        alertBack('this file does not exist');
+    }
+    return $html;
+}
+
 function page($sql,$size){
     global $pagesize,$pagenumber,$pageabsolute,$page,$num;
     if (isset($_GET['page'])){
         $page=$_GET['page'];
-        if(empty($page)||$page<0||!is_numeric($page)){
+        if(empty($page)||$page<=0||!is_numeric($page)){
             $page=1;
         }else{
             $page=intval($page);
@@ -130,17 +199,17 @@ function page($sql,$size){
 function paging($type){
     global $page;
     global $pageabsolute;
-    global $pagenumber;
+    global $pagenumber,$id;
     global $num;
     if($type==1){
       echo '<div id="page_num">';
       echo '<ul>';
         for ($i=0;$i<$pagenumber;$i++){
             if ($page==$i){
-            echo '<li><a href="'.SCRIPT.'.php?page='.($i+1).'" class="selected">'.($i+1).'</a></li>';
+            echo '<li><a href="'.SCRIPT.'.php?'.$id.'page='.($i+1).'" class="selected">'.($i+1).'</a></li>';
             }
             else{
-            echo '<li><a href="'.SCRIPT.'.php?page='.($i+1).'">'.($i+1).'</a></li>';
+            echo '<li><a href="'.SCRIPT.'.php?'.$id.'page='.($i+1).'">'.($i+1).'</a></li>';
             }
         }
       echo '</ul>';
@@ -149,7 +218,7 @@ function paging($type){
         echo '<div id="page_text">';
         echo '<ul>';
         echo '<li>'.$page.'/'.$pageabsolute.'page|</li>';
-        echo '<li><strong>'.$num.'</strong>users|</li>';
+        echo '<li><strong>'.$num.'</strong>data|</li>';
     if ($page==1){
         echo '<li>toppage|</li>';
         echo '<li>uppage|</li>';
@@ -166,6 +235,8 @@ function paging($type){
     } 
   echo '</ul>';
 echo '</div>';
+    } else {
+        paging(2);
     }
 }
 function unsetcookies(){
@@ -177,9 +248,9 @@ function unsetcookies(){
 /*
  * get a length of string
  */
-function title($string){
-    if (mb_strlen($string,'utf-8')>14){
-        $string=mb_substr($string,0,14,'utf-8');
+function title($string,$num){
+    if (mb_strlen($string,'utf-8')>$num){
+        $string=mb_substr($string,0,$num,'utf-8');
     }
     return $string;
 }

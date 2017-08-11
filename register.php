@@ -7,9 +7,9 @@ header('Content-type:text/html charset=utf-8');
 //define a variable to decide which css it should choose
 define('SCRIPT','register');
 //judge if it is a submit
+global $conn;
 login_state();
 if ($_GET['action']=='register'){
-       global $conn;
 //     var_dump($conn);
 //     for safety you need to make sure the code is right
 //     if(!$_POST['code']==$_SESSION['code']){
@@ -33,11 +33,22 @@ if ($_GET['action']=='register'){
         $clean['email']=$_POST['email'];
         'your QQ is:'.$clean['QQ']=checkQQ($_POST['QQ']);
         //add new user
-        is_user_repeat("select tg_username FROM user WHERE tg_username='{$clean['userName']}'", 'sorry, this user was used');
+        is_user_repeat("SELECT 
+                              tg_username
+                         FROM 
+                              user 
+                         WHERE 
+                              tg_username='{$clean['userName']}'", 
+    'sorry, this user was used');
 //         if (fetch_array("select tg_username FROM user WHERE tg_username='{$clean['userName']}'")){
 //             alertBack("this username has used");
 //         }   //make sure a username will used by two users
-        if (fetch_array("select tg_username FROM user WHERE tg_email='{$clean['email']}'")){
+        if (fetch_array("SELECT 
+                               tg_username 
+                           FROM 
+                               user 
+                          WHERE 
+                               tg_email='{$clean['email']}'")){
             alertBack("this email has used");
         }//make sure user cant use same email more than one time
 
@@ -74,7 +85,10 @@ if ($_GET['action']=='register'){
         
 
         if (affected_rows()==1){
+            $clean['id']=_insertID();
             mysqli_close($conn);
+            //generate XML
+            _setXml('new.xml', $clean);
             location('congraduation, your submit successed','active.php?active='.$clean['active']);
         }else{
             mysqli_close($conn);

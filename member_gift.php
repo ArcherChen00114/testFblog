@@ -3,12 +3,13 @@ session_start();
 define('PWD',537238);
 require 'includes/common.inc.php';
 header('Content-type:text/html charset=utf-8');
-define('SCRIPT','member_message');
+define('SCRIPT','member_gift');
 global $pagesize,$pagenumber;
+global $conn;
 page("SELECT 
             tg_id 
         FROM 
-            message
+            gift
        WHERE
             tg_touser='{$_COOKIE['touser']}'",5);
 if (!isset($_COOKIE['username'])){
@@ -18,23 +19,24 @@ if ($_GET['action']=='delete' && isset($_POST['ids'])){
     $clean=array();
     $clean['ids']=mysqli_string(implode(',',$_POST['ids']));
  //ensurence, compare uniqid
- if(!!$rows =fetch_array("SELECT
-                                   tg_uniqid 
-                             FROM 
-                                   user 
-                             WHERE 
-                                  tg_username='{$_COOKIE['username']}'"))
+    if(!!$rows =fetch_array("SELECT
+                                    tg_uniqid
+                               FROM
+                                    user
+                              WHERE
+                                    tg_username='{$_COOKIE['username']}'"))
     {
+        //this part used for check uniqid
         _uniqid($rows['tg_uniqid'], $_COOKIE['uniqid']);
         query("DELETE FROM
-                          message
+                            gift
                      WHERE
-                          tg_id 
+                            tg_id
                         IN
-                          ({$clean['ids']})");
+                            ({$clean['ids']})");
         if (affected_rows()){
             mysqli_close($conn);
-            location('message deleted','member_message.php');
+            location('gift deleted','member_gift.php');
         }else{
             mysqli_close($conn);
             alertBack('delete failed');
@@ -42,21 +44,22 @@ if ($_GET['action']=='delete' && isset($_POST['ids'])){
     } else {
         alertBack('illegal');
     }
-}
+    }
 $result=query("SELECT
                     tg_id,
                     tg_fromuser,
                     tg_content,
                     tg_date,
-                    tg_state
+                    tg_gift
                 FROM
-                    message
+                    gift
                WHERE
                     tg_touser='{$_COOKIE['touser']}'
             ORDER BY
                     tg_date
                     DESC
                     LIMIT $pagenumber,$pagesize;");
+
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-CN">
@@ -67,7 +70,7 @@ $result=query("SELECT
 <style type="text/css" media="all">
 </style>
 <!--   -->
-<title>message mail</title>
+<title>gift manage center</title>
 <script type="text/javescript" src="js/member_message.js"></script>
 </head>
 <body>
@@ -78,38 +81,35 @@ require 'includes/header.inc.php';
 <?php require 'includes/member.inc.php'?>
    <div id="member_main">
    <h2>
-   message manage center
+   gift manage center
    </h2>
    <form method="post" action="?action=delete">
    <table cellspacing="1">
-   <tr><th>sender</th><th>content</th><th>time</th><th>state</th><th>action</th></tr>
+   <tr><th>sender</th><th>gift number</th><th>time</th><th>state</th><th>action</th></tr>
 <?php
-    $html=array();
-    while(!!$rows=fetch_array_list($result))
+$html=array();
+while(!!$rows=fetch_array_list($result))
 //rows[0]=username,[1]=sex,[2]=icon;
 //fetch_array will read info from sql AGAIN!,need to read the info array
 //
 {
     $html['id']=$rows['tg_id'];
-    if (empty($rows['tg_state'])){
-        $html['state']='未读';
-        $html['content']='<strong>'.title($html['content'],14).'</strong>';
-    }else{
-        $html['state']='已读';
-        $html['content']=title($html['content'],14);
-    }
     $html['fromuser']=$rows['tg_fromuser'];
     $html['content']=$rows['tg_content'];
+    $html['gift']=$rows['tg_gift'];
     $html['date']=$rows['tg_date'];
+    $html['count']+=$html['gift'];
     $html=htmls($html);
     ?>
-   <tr><td><?php echo $html['fromuser']?></td><td><a href="member_message_detail.php?id=<?php echo $html['id']?>" title="<?php echo $html['content']?>"><?php echo title($html['content'],14).'...'?></a></td><td><?php echo $html['date']?></td><td><?php echo $html['state']?></td><td><input name="ids[]" value='<?php echo $html['id']?>' type="checkbox"/></td></tr>
+   <tr><td><?php echo $html['fromuser']?></td><td><img src="" alt="gift"/>x<?php echo $html['gift']?></td><td><?php echo title($html['content']) ?></td><td><?php echo $html['date']?></td><td><?php echo $html['state']?></td><td><input name="ids[]" value='<?php echo $html['id']?>' type="checkbox"/></td></tr>
    
    <?php 
 }
 free($result);
-?> 
+?>
+   <tr><td colspan="5">gifts in total</td></tr>
    <tr><td colspan="5"><label for="all">choose all<input type="checkbox" name="checkall" id="all"/></label><input type="submit" value="delete checked"/></td></tr>
+
    </table>
    </form>
    </div>

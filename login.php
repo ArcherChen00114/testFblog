@@ -1,5 +1,26 @@
 <?php
-
+/*
+ * define PWD
+ * require common inc.php
+ * require login function file
+ * define SCRIPT
+ *  check action
+ *   check code
+ *    make $clean as array and put info into array
+ *    get data from database and check if
+ *                                     have this username,password,and it is actived
+ *                                     yes then login
+ *                                     no then clean session end connection
+ *    renew the logtime,logip,and log times
+ *    close database connection after login
+ *    clean session
+ *    send info to $_cookies
+ *    jump to newfile.php(toppage)
+ *                                                  
+ *                                                  
+ *                                                  
+ *                                                  
+ */
 session_start();
 define('PWD',537238);
 require 'includes/common.inc.php';
@@ -16,7 +37,15 @@ if ($_GET['action']=='login'){
     $clean['passWord']=checkPassword($_POST['password'],6);
     $clean['time']=check_time($_POST['time']);
 //     print_r($clean);//saved all info in array clean.
-    if(!!$rows = fetch_array("SELECT tg_username,tg_uniqid FROM user WHERE tg_username='{$clean['userName']}' AND tg_password='{$clean['passWord']}'AND tg_active=''")){
+    if(!!$rows = fetch_array("SELECT 
+                                    tg_username,tg_uniqid 
+                                FROM 
+                                    user 
+                               WHERE 
+                                    tg_username='{$clean['userName']}' 
+                                 AND 
+                                    tg_password='{$clean['passWord']}'
+                                 AND tg_active=''")){
     echo 'log in';
     //login will send info to sql
     query("UPDATE user SET 

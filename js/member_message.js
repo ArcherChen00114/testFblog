@@ -11,7 +11,7 @@ window.onload=function(){
 		}
 	}
 	fm.onsubmit=function(){
-		if(confirm('Are you sure you want to DELETE THOSE message?')){
+		if(confirm('Are you sure you want to DELETE THOSE data?')){
 			return true;
 		}
 		return false;

@@ -1,4 +1,15 @@
 <?php
+/* active module//check if user enter by use active page
+ *   check module//double check to make sure it's user's work// then delete active code from user
+ *   html
+ *   show activition page
+ *   /html
+ * 
+ * 
+ * 
+ * 
+ * 
+ */
 define('PWD',537238);
 require 'includes/common.inc.php';
 include 'includes/check.func.php';

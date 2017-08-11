@@ -106,8 +106,7 @@
  *     build a new sql chart 'message'
  *     tg_id mediumint(8),tg_touser varchar(20),tg_fromuser varchar(20)
  *     tg_content varchar(200),tg_date datetime
- *     T=>材料=>O=>战术=>U=>军火=>C=>任务=>H=>布阵=>A=>休息=>K=>收藏=>A=>远行
- *     i30
+ *1.6 now we move to 1.6
  *     ----------------8/2 14:58
  *     message-detail.php,and delete message
  *     js file of message_detail does not work, should have
@@ -119,6 +118,49 @@
  *     ---------------8/3 11:05
  *     able to show how many message not read yet
  *     js file of friend window did not test yet
+ *     ---------------8/3 19:48
+ *     //problem of js file, cant have function on something
+ *     ///need some change on paging() function,that user should change
+ *     --------------8/4 14:08
+ *     add index to every php at title//not finished yet
+ *     message_friend Verification has an another check about affect rows
+ *     make gift.php and how to send/delete/calculate gift 
+ *     add new user part in newfile(toppage).php
+ *     ///login.php didnot alertBack when you enter valid username or password
+ *     //generate a new xml for store newusers' information
+ *     //get info from xml to show newuser
+ *     setXMl() to make an XML to store infomation in XML (in global.func.php)
+ *     make getXML() to get data from xmlfile
+ *     add article list
+ *     -------------8/7 14:06
+ *     yahoooooooo monday!
+ *     WHAT IS UBB???
+ *     font-size of post.php need an image------
+ *     because we cant get so many gifs in time, this part of post might be
+ *     deleted, the font-choose part
+ *     js file was given, but ubbimg lost, ubb bar lost
+ *     post.php need test
+ *     ///dont know why but it always jump to login.php\
+ *     ------------8/10 15:40
+ *     3 classes will finished today
+ *     parts 50: create aticle.php to show posted article,
+ *     and a new css for article,use min-height in css to make the 
+ *     length of web could change itself depends on text
+ *     made article.php
+ *     //still need to deal with images of post.php, and the problem that post.php always ask you
+ *     "dont do that in login state"
+ *     ------------8/11 14:41
+ *     //post.php's bug has fixed, able to post posts now,and could see it on article.php,but
+ *     css of article.php looks terrible
+ *     // add friends have problems cant works now
+ *     add reply part into article.php, can reply a topic and add it into database
+ *     going to make those reply show under topic
+ *     //article.php's reply function and it's css need to be tested, and have to know if
+ *      it will show reply for topic, or will show some others
+ *    
+ *     
+ *     
+ *     
  */    
  
 ?>

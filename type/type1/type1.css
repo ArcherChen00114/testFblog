@@ -59,6 +59,7 @@ text-indent:10px;/*make the text intent*/
 	clear:both;
 	padding:10px 0 0 0;
 	position:relative;
+	font-size:12px;
 }
 #page_num ul{
 	postion:abosolute;
@@ -88,6 +89,7 @@ text-indent:10px;/*make the text intent*/
 	height:20px;
 	clear:both;
 	padding:10px 0;
+	font-size:12px;
 }
 #page_text ul{
 	text-align:center;

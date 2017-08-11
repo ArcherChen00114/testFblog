@@ -55,5 +55,8 @@ function affected_rows(){
     global $conn;
     return mysqli_affected_rows($conn);
 }
-
+function _insertID() {
+    global $conn;
+    return mysqli_insert_id($conn);
+}
 ?>

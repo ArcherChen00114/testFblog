@@ -1,4 +1,18 @@
 <?php
+
+/* define passcode of web
+ *   require include files
+ *   require function files
+ *    define SCRIPT
+ *      page setting
+ *      <html>
+     *      require header
+     *      input $html
+     *      echo $html with <a>
+     *      free resource
+     *      pagging
+ *      </html>
+ */
 session_start();
 define('PWD',537238);
 require 'includes/common.inc.php';
@@ -44,12 +58,13 @@ require 'includes/header.inc.php';
 <h2>
 blog friendlist
 </h2>
-<?php  while(!!$rows=fetch_array_list($result))
+<?php 
+    $html=array(); 
+while(!!$rows=fetch_array_list($result))
 //rows[0]=username,[1]=sex,[2]=icon;
 //fetch_array will read info from sql AGAIN!,need to read the info array
 //
 {
-    $html=array();
     $html['id']=$rows['tg_id'];
     $html['username']=htmls($rows['tg_username']);
     $html['sex']=htmls($rows['tg_sex']);
@@ -63,10 +78,10 @@ blog friendlist
    <dd class='message'><a href='javascript:;' name="message" title=<?php echo $html['id']?>>message</a></dd>
    <dd class='friend'><a href='javascript:;' name="friend" title=<?php echo $html['id']?>>add friend</a></dd>
    <dd class='mail'>mail</dd>
-   <dd class='gift'>gift</dd>
- <?php }?>
+   <dd class='gift'><a href='javascript:;' name="gift" title=<?php echo $html['id']?>>gift</a></dd>
 </dl>
 <?php 
+}
 free($result);
 paging(2);
 ?>

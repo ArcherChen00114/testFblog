@@ -1,5 +1,13 @@
 <?php
-
+/*                          set database login infor
+ *                          check php version
+ *                          check PWD
+ *                          require common function
+ *                          connect to server
+ *                          use function to calculate time
+ *                          show how many messages not read yet
+ *                                                  
+ */
 
 if (!defined('PWD')){
     exit('Access denied');
@@ -21,13 +29,16 @@ set_names();
 $starttime = runtime();
 //短信提醒
 $message = fetch_array("SELECT 
-                                          COUNT(tg_id) 
-                                        AS 
-                                          count 
-                                      FROM 
-                                          message 
-                                     WHERE 
-                                          tg_state=0");
+                              COUNT(tg_id) 
+                            AS 
+                              count 
+                          FROM 
+                              message 
+                         WHERE 
+                              tg_state=0
+                           AND
+                              tg_touser='{$_COOKIE['username']}'
+                              ");
 if(empty($message['count'])){
     $message_html='<strong class="noread">(0)</strong>';
 }else{

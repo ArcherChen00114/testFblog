@@ -5,12 +5,89 @@
 	border:2px solid #ccc;
 	float:right;
 }
+#list a.post{
+	displau:block;
+	width:114px;
+	height:33px;
+	background:url(images/article.jpg)no-repeat;
+	/*text-indent:-9999px;*/
+	margin:10px 0 0 auto;
+}
+#list ul.article{
+	padding: 0 50px;
+}
+#list ul.article li a{
+	color:#333;
+}
+#list ul.article li a:hover{
+	color:#f60;
+}
+#list ul.article li{
+	height:30px;
+	line-height:30px;
+	boder-bottom:1px dashed #333;
+}
+#list ul.article li em{
+	float:right;
+	font-size:normal;
+}
+#list ul.article li.icon1{
+	background:url(images/icon1.jpg)no-repeat left center;
+	padding: 0 0 0 25px;
+}
+#list ul.article li.icon2{
+	background:url(images/icon1.jpg)no-repeat left center;
+	padding: 0 0 0 25px;
+}
+#list ul.article li.icon3{
+	background:url(images/icon1.jpg)no-repeat left center;
+	padding: 0 0 0 25px;
+}
+#list ul.article li.icon4{
+	background:url(images/icon1.jpg)no-repeat left center;
+	padding: 0 0 0 25px;
+}
+#list ul.article li.icon5{
+	background:url(images/icon1.jpg)no-repeat left center;
+	padding: 0 0 0 25px;
+}
+#list ul.article li.icon6{
+	background:url(images/icon1.jpg)no-repeat left center;
+	padding: 0 0 0 25px;
+}
+#list ul.article li.icon7{
+	background:url(images/icon1.jpg)no-repeat left center;
+	padding: 0 0 0 25px;
+}
+#list ul.article li.icon8{
+	background:url(images/icon1.jpg)no-repeat left center;
+	padding: 0 0 0 25px;
+}
+#list ul.article li.icon9{
+	background:url(images/icon1.jpg)no-repeat left center;
+	padding: 0 0 0 25px;
+}
+#list ul.article li.icon10{
+	background:url(images/icon1.jpg)no-repeat left center;
+	padding: 0 0 0 25px;
+}
+
+#list ul.article li.icon11{
+	background:url(images/icon1.jpg)no-repeat left center;
+	padding: 0 0 0 25px;
+}
+
+#list ul.article li.icon12{
+	background:url(images/icon1.jpg)no-repeat left center;
+	padding: 0 0 0 25px;
+}
 #user{
 	width:340px;
-	height:250px;
+	height:300px;
 	border:2px solid #ccc;
 	float:left;
 	margin:0 0 10px 0;
+	font-size:12px;
 }
 
 #pics{
@@ -18,4 +95,53 @@
 	height:250px;
 	border:2px solid #ccc;
 	float:left;
+}
+#user dl{
+	width:170px;
+	margin:0 auto;
+	padding: 10px 0 0 0;
+}
+#user dl dt{
+	
+	width:150px;
+	background:green;
+	margin: 0 0 5px 0;
+}
+#user dl dt img{
+	margin:0 auto;
+	display:block;
+}
+#user dl dd a{
+	text-decoration:none;
+	color:#333;
+}
+#user dl dd{
+	height:20px;
+	text-align:center;
+	width:75px;
+	float:left;
+	background:yellow;
+}
+#user dl dd.email,#user dl dd.QQ{
+	width:190px;
+	text-align:left;
+	padding:0 0 0 0;
+	text-indent:5px;
+}
+#user dl dd.user{
+	width:150px;
+	float:none;
+	color:orange;
+}
+#user dl dd.message{
+	background:url(../../imgges/x1.gif) no-repeat 5px 35%;
+}
+#user dl dd.friend{
+	background:url(../../imgges/x2.gif) no-repeat left 35%;
+}
+#user dl dd.mail{
+	background:url(../../imgges/x3.gif) no-repeat 5px 35%;
+}
+#user dl dd.gift{
+	background:url(../../imgges/x4.gif) no-repeat left 35%;
 }

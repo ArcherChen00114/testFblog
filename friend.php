@@ -1,4 +1,31 @@
-<?php 
+<?php /*
+ *   define PWD for file
+ *   define SCRIPT
+ *     require include file
+ *     header to make sure charset is utf-8
+ *       isset username (make sure login state)
+ *       make sure action is add(then check code){check code
+ *                                                          get data from database to $rows
+ *                                                                                         compare uniqid to make keep data safe        
+ *       include function file
+ *         make $clean array to get data from cookies and post(and make all data  suitable to data base)
+ *          check if this user have sent this request before
+ *           then send this request to sql database
+ *            check if this request is send to this user himself
+ *             yes then back
+ *             no then pass
+ *              check if data base affected and give answer
+ *       <html
+ *       <form =post, action =add
+ *         echo TO:touser and make it readonly
+ *         set default sentence
+ *         include passcode check
+ *         submit button
+ *       /form>
+ *       /html>
+ *       
+ *     
+ */     
 session_start();
 define('PWD',537238);
 require 'includes/common.inc.php';
@@ -108,7 +135,7 @@ require 'includes/header.inc.php';
 ?>
 <div id="message">
   <h3>add friend</h3>
-  <form method="post" action="?action=add">
+  <form method="post" action="friend.php?action=add">
   <input type="hidden" name="touser" value="<?php echo $html['touser']?>" /> 
   <dl>
     <dd><input type="text" readonly="readonly" value="TO:<?php echo $html['touser']?>" class="text"/></dd>

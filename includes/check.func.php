@@ -159,5 +159,16 @@ if (mb_strlen($string)<10 || mb_strlen($string)>200){
     }
     return $string;
 }
-
+function checkPostTitle($string,$min,$max){
+    if (mb_strlen($string)<$min || mb_strlen($string)>$max){
+        alertBack('title should not short than '.$min.' or longer than '.$max.'');
+    }
+    return $string;    
+}
+function checkPostContent($string,$num){
+    if (!mb_strlen($string)>$num){
+        alertBack('content should not short than '.$num.'!');
+    }
+    return $string;    
+}
 ?>

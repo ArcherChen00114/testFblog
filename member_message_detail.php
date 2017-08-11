@@ -5,6 +5,7 @@ define('PWD',537238);
 require 'includes/common.inc.php';
 header('Content-type:text/html charset=utf-8');
 define('SCRIPT','member_message_detail');
+global $conn;
 if (!isset($_COOKIE['username'])){
     alertBack('please login');
 }

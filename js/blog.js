@@ -4,7 +4,8 @@
  
  window.onload=function(){
  	 var message=document.getElementsByName('message');
- 	 var friend=document.getElementsByName('message');
+ 	 var friend=document.getElementsByName('friend');
+ 	 var gift=document.getElementsByName('gift');
  	 for(var i=0;i<message.length;i++){
  	 	message[i].onclick=function(){
  	 		centerWindow('message.php?id='+this.title,'message',250,400);
@@ -12,7 +13,12 @@
  	 }
  	for(var i=0;i<friend.length;i++){
  	 	friend[i].onclick=function(){
- 	 		centerWindow('message.php?id='+this.title,'friend',250,400);
+ 	 		centerWindow('friend.php?id='+this.title,'friend',250,400);
+ 	 	}
+ 	 }
+ 	for(var i=0;i<gift.length;i++){
+ 	 	gift[i].onclick=function(){
+ 	 		centerWindow('gift.php?id='+this.title,'gift',250,400);
  	 	}
  	 }
  }

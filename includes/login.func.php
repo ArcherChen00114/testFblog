@@ -45,8 +45,8 @@ function cookies($username,$uniqid,$time){//login cookies
     setcookie('uniqid',$uniqid);
     switch($time){
         case 0:
-            setcookie('username',$username);
-            setcookie('uniqid',$uniqid);
+            setcookie('username',$username,time());
+            setcookie('uniqid',$uniqid,time());
         case 1:  //for a day
             setcookie('username',$username,time()+86400);
             setcookie('uniqid',$uniqid,time()+86400);
