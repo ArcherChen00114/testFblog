@@ -1,0 +1,10 @@
+@CHARSET "UTF-8";
+#member #member_main dl{
+    width:450px;
+	margin:15px auto;
+	font-size:14px;
+}
+#member #member_main dl dd{
+	border-bottom:1px dashed #999;
+	padding:10px 0;	
+}

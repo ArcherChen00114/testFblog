@@ -16,7 +16,6 @@ if (!function_exists(alertBack)){
 
 function checkUsername($username,$minnum=2,$maxnum=20){
     //get the spaces out of the $username
-    global $system;
     $username=trim($username);
     if (mb_strlen($username,'utf-8')>$maxnum || mb_strlen($username,'utf-8')<$minnum){
     alertBack('usernames length should be '.$minnum.' to '.$maxnum);
@@ -27,7 +26,7 @@ function checkUsername($username,$minnum=2,$maxnum=20){
         alertBack('illegal name');
     }
     //limit special names;
-    $mg=explode("|",$system['banstring']);
+    $mg=array();
     //absolute match
     if (in_array($username, $mg)){
         alertBack('name not allowed');
@@ -154,28 +153,5 @@ function sha1Uniqid(){
     return sha1(uniqid(rand(),true));
 }
 
-function checkContent($string){
-if (mb_strlen($string)<10 || mb_strlen($string)>200){
-        alertBack('message should not short than 10 or longer than 200');
-    }
-    return $string;
-}
-function checkPostTitle($string,$min,$max){
-    if (mb_strlen($string)<$min || mb_strlen($string)>$max){
-        alertBack('title should not short than '.$min.' or longer than '.$max.'');
-    }
-    return $string;    
-}
-function checkPostContent($string,$num){
-    if (!mb_strlen($string)>$num){
-        alertBack('content should not short than '.$num.'!');
-    }
-    return $string;    
-}
-function checkAutograph($string,$num){
-    if (!mb_strlen($string)>$num){
-        alertBack('content should not longer than '.$num.'!');
-    }
-    return $string;
-}
+
 ?>

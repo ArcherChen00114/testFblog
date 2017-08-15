@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /* git hub update finished, need to
 *      git add .(to merge), then rebase --continue(rebase)
 *      then update it with push -f(force) origin master. at least it work
@@ -157,9 +157,31 @@
  *     going to make those reply show under topic
  *     //article.php's reply function and it's css need to be tested, and have to know if
  *      it will show reply for topic, or will show some others
- *    
- *     
- *     
+	have some clue about usgin github mergeing tool, should use a,b,c to choose one of the heads then it will merge it 
+	but this way not tested
+	try to figure out a way not using force push, it is dangerous
+	maybe need an another text to store experience of using gihub
+	-------------8/14 15:27
+	add article_modify.php
+	need to change the css of aritcle.php
+	article.php cant make reply be avaliable
+	give article page the function to reply host/or anyother users(NOT TESTED)
+ *    could use css to make yinyong have a dashed topline to show it is yinyong rather than 
+ *    use '---------'
+ *    autograph need test
+ *    use cookies or database to limit user post time,(cant post 2 articles in 1 min)
+ *    8/14 21:01
+ *    manage_set have problem of $html['post_html']
+ *    manage_set.php set up,able to get info from and set it into default state
+ *    every files need to delete <title> and include title.inc.php
+ *    8/15 14:44
+ *    manage set_code using function available (not tested)
+ *    article per page setting ,friends blog number setting available (not tested)
+ *    post time limit seting ,reply time limit setting available (not tested) 
+ *    set manage_modify page and delete function to manage_member page (not tested)
+ *    THIS PART WAS SET UP BY MYSELF ,SHOULD TEST IN FREE TIME AND SHOULD BACK UP BEFORE TEST
+ *     manage_job.php set up, able to add new administrtor
+ *     photo.php set up, photo_add_dir.php set up
  *     
  */    
  

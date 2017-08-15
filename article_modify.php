@@ -1,78 +1,96 @@
 <?php 
-/*
- * 8/14 add timelimit for post (tested)
- * 
- */
 session_start();
 define('PWD',537238);
 require 'includes/common.inc.php';
 include 'includes/check.func.php';
 header('Content-type:text/html charset=utf-8');
 //define a variable to decide which css it should choose
-define('SCRIPT','post');
+define('SCRIPT','article_modify');
 //judge if it is a site
 global $conn;
 //have to login before post
 if (!isset($_COOKIE['username'])){
     alertBack('please login');
 }
-    
+//modify
 if($_GET['action']=='post'){
-    if (!empty($system['code'])){
-    checkCode($_POST['code'], $_SESSION['code']);
+    if($_GET['action']=='post'){
+        if(!!$rows =fetch_array("SELECT
+            tg_uniqid
+            FROM
+            user
+            WHERE
+            tg_username='{$_COOKIE['username']}'")){
+            //compare unipid for safty
+        _uniqid($rows['tg_uniqid'], $_COOKIE['uniqid']);
+        //modify start
+        $clean=array();
+        $clean['id']=$_POST['id'];
+        $clean['type']=$_POST['type'];
+        $clean['title']=checkPostTitle($_POST['title'],2,40);
+        $clean['content']=checkPostContent($_POST['content'],2);
+        $clean=mysqli_string($clean);
+        query("UPDATE
+                     article
+                  SET
+                     tg_type='{$clean['type']}',
+                     tg_title='{$clean['title']}',
+                     tg_content='{$clean['content']}',
+                     tg_last_modifydate=NOW()
+                WHERE
+                     tg_id='{$clean['id']}'
+                     ");
+        if (affected_rows()==1){
+            mysqli_close($conn);
+//             session_destroy();
+            location('congraduation, your change successed','article.php?id='.$clean['id']);
+        }else{
+            mysqli_close($conn);
+//             session_destroy();
+            alertBack('your change failed');
+        }
+        } else {
+            alertBack('illegal');
+        }
     }
-    if(!!$rows =fetch_array("SELECT
-                                    tg_uniqid
-                               FROM
-                                    user
-                              WHERE
-                                    tg_username='{$_COOKIE['username']}'")){
-                                    global $system;
-        //compare unipid for safty
-    _uniqid($rows['tg_uniqid'], $_COOKIE['uniqid']);
-    //limit post speed
-    timed(time(), $_COOKIE['post_time'], $system['post']);
-    $clean=array();
-    $clean['username']=$_COOKIE['username'];
-    $clean['type']=$_POST['type'];
-    $clean['title']=checkPostTitle($_POST['title'],2,40);
-    $clean['content']=checkPostContent($_POST['content'],2);
-    $clean=mysqli_string($clean);
-    query("INSERT INTO
-                      article(
-                              tg_username,
-                              tg_title,
-                              tg_type,
-                              tg_content,
-                              tg_date)
-                        VALUES
-                              (
-                               '{$clean['username']}',
-                               '{$clean['title']}',
-                               '{$clean['type']}',
-                               '{$clean['content']}',
-                               NOW()
-                              )");
-    if (affected_rows()==1){
-        $clean['id']=_insertID();
-        setcookie('post_time',time());
-        mysqli_close($conn);
-//         session_destroy();
-        location('congraduation, your post successed','article.php?id='.$clean['id']);
-    }else{
-        mysqli_close($conn);
-//         session_destroy();
-        alertBack('your post failed');
-         }
+    
+    
+    
+}
+//get info
+if (isset($_GET['id'])){
+    if(!!$rows=fetch_array("SELECT
+                                    tg_username,
+                                    tg_title,
+                                    tg_type,
+                                    tg_content
+                            FROM
+                                    article
+                            WHERE
+                                    tg_reid=0
+                            AND
+                                    tg_id='{$_GET['id']}'")){
+                    $html=array();
+                    $html['id']=$_GET['id'];
+                    $html['username']=$rows['tg_username'];
+                    $html['title']=$rows['tg_title'];
+                    $html['type']=$rows['tg_type'];
+                    $html['content']=$rows['tg_content'];
+                    $html=htmls($html);
+                    
+             if(!$_COOKIE['usernmae']==$html['username']){
+                 alertBack('you have no right to change this topic');
+             }
+                                    
+    }else {
+        alertBack('this data does not exist');
     }
-}   
-//could save in mysql, for confirmation of cookies
-//MUST do this after submit, or uniqid will change
-//make that uniqid id saved in session and 
-// save it in $uniqid and give it to form's value
-//or it will change and never equal, 
-//if that value not equal then
-// the form cant submit
+}    else {
+    alertBack('illegal');
+    }
+
+
+
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -86,6 +104,7 @@ if($_GET['action']=='post'){
 <style type="text/css" media="all">
 </style>
 <!-- 鍏朵粬鏂囨。澶村厓绱� -->
+<title>Change Topic</title>
 </head>
 <body>
 <?php 
@@ -95,13 +114,14 @@ require 'includes/header.inc.php';
     <h2>
     POST
     </h2>
-    <form method="post" action="post.php?action=post" name="post">
+    <form method="post" action="?action=modify" name="post">
+        <input type="hidden" value="<?php echo $html['id']?>" name="id" />
         <dl>
-            <dt>请认真输出以下信息</dt>
+            <dt>请认真修改以下信息</dt>
             <dd>
               class:
               <?php foreach(range(1,12) as $num){
-                  if ($num==1){
+                  if ($num==$html['type']){
                   echo '<label for="type'.$num.'"> <input type="radio" id="type'.$num.'" name="type" value="'.$num.'"checked="checked" />';
                   }
                   else{
@@ -113,7 +133,7 @@ require 'includes/header.inc.php';
                    }
                   }?>
             </dd>
-            <dd>title:<input type="text" name="title" class="text"/>(*)</dd>
+            <dd>title:<input type="text" name="title" value="<?php echo $html['title']?>" class="text"/>(*)</dd>
             <dd id="q">image: <a href:"javascript:;">image[1]</a> <a href:"javascript:;">image[2]</a> <a href:"javascript:;">image[3]</a></dd>
             <dd>
             <div id="ubb">
@@ -145,13 +165,10 @@ require 'includes/header.inc.php';
       </div>
 <!--             we could pack those thing over that line
 in ubb.inc.php-->
-            <textarea name="content" rows="9" ></textarea> 
+            <textarea name="content" rows="9" ><?php echo $html['content']?></textarea> 
             </dd>
-            
-            <?php if (!empty($system['code'])){?>
             <dd>code:<input type="text" name="code" class="text code"/><img src="image.php" id="passcode"  onclick="javascript:this.src='image.php'"/></dd>
-            <?php }?>
-            <dd><input type="submit" class="submit" value="post"/></dd>
+            <dd><input type="submit" class="submit" value="change"/></dd>
 
         </dl>
     

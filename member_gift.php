@@ -70,7 +70,6 @@ $result=query("SELECT
 <style type="text/css" media="all">
 </style>
 <!--   -->
-<title>gift manage center</title>
 <script type="text/javescript" src="js/member_message.js"></script>
 </head>
 <body>

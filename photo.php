@@ -19,24 +19,8 @@ require 'includes/common.inc.php';
 include 'includes/login.func.php';
 header('Content-type:text/html charset=utf-8');
 //define a variable to decide which css it should choose
-define('SCRIPT','blog');
-//get info from sql as array
-//first element is query,second element means how many users per page
-global $pagesize,$pagenumber,$system;
-echo $system['article'];
-page("SELECT tg_id FROM user",$system['blog']);
-global $conn;
-$result=query("SELECT 
-                     tg_id,
-                     tg_username,
-                     tg_sex,
-                     tg_face 
-               FROM 
-                     user 
-               ORDER BY 
-                     tg_register_date 
-               DESC 
-               LIMIT $pagenumber,$pagesize;");
+define('SCRIPT','photo');
+
 //limit get info
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -54,24 +38,14 @@ $result=query("SELECT
 <?php 
 require 'includes/header.inc.php';
 ?>
-<div id="blog">
+<div id="photo">
 <h2>
-blog friendlist
+photo list
+<?php if(isset($_SESSION['admin']) && isset($_COOKIE['username'])){
+?>
+<p><a href="photo_add_dir.php">add new photo direction</a></p>
+<?php }?>
 </h2>
-<?php 
-    $html=array(); 
-while(!!$rows=fetch_array_list($result))
-//rows[0]=username,[1]=sex,[2]=icon;
-//fetch_array will read info from sql AGAIN!,need to read the info array
-//
-{
-    $html['id']=$rows['tg_id'];
-    $html['username']=htmls($rows['tg_username']);
-    $html['sex']=htmls($rows['tg_sex']);
-    $html['face']=htmls($rows['tg_face']);
-    $html=htmls($html);?> <?php 
-// for ($i=10;$i<30;$i++){
-// ?>
 <dl>
    <dd class='user'> <?php echo $html['username'];?>(<?php echo $html['sex'];?>) </dd>
    <dt> <img src="<?php echo $html['face']; ?>" alt="log1024" /></dt>
@@ -81,7 +55,7 @@ while(!!$rows=fetch_array_list($result))
    <dd class='gift'><a href='javascript:;' name="gift" title=<?php echo $html['id']?>>gift</a></dd>
 </dl>
 <?php 
-}
+
 free($result);
 paging(2);
 ?>

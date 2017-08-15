@@ -2,6 +2,18 @@
 if (!defined('PWD')){
     exit('Access denied');;
 }//for safe
+
+function manage_login(){
+    if((!isset($_COOKIE['username']))||(!isset($_SESSION['admin']))){
+        alertBack('illegal');
+    }
+}
+
+function timed($NowTime,$PreTime,$second){
+if ($NowTime()-$PreTime<$second){
+        alertBack('please dont post too many articles in short time');
+    }
+}
 /*
  * runtime used to get program running time
 * @access public
@@ -185,7 +197,7 @@ function page($sql,$size){
     $pagenumber=($page-1)*10;
     if ($num==0){
         $pageabsolute=1;
-    }else{
+    }elseif($pagesize!=0){
         $pageabsolute=ceil($page/$pagesize);
     }
     if ($page>$pageabsolute){
