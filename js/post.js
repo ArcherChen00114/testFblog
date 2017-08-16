@@ -7,7 +7,7 @@ window.onload=function(){
 	var ubbimg=ubb.getElementsByTagName('img');
 	var fm=document.getElementsByTagName('form')[0];
 	var font=document.getElementById('font');
-	var color=document.getElementsByTagName('color');
+	var color=document.getElementsByTagId('color');
 	var html=document.getElementsByTagName('html');
 	
 	var q=document.getElementById('q');

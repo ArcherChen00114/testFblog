@@ -5,7 +5,6 @@ save for use in future
  */
  window.onload=function(){
  	var faceimg=document.getElementById('faceimg');
- 	if (faceimg!=null){
  	var code = document.getElementById('code');
  	faceimg.onclick=function(){
  		window.open('face.php','face','width=400,height=400,top=0,left=0,scrollbars=1');
@@ -13,11 +12,9 @@ save for use in future
  	code.onclick=function(){
  		window.open('face.php','face','width=400,height=400,top=0,left=0,scrollbars=1');
  	}
-  }
  };
 //wait until the web is ready
  var fm=document.getELementsByTagName('form')[0];
- if (fm!=undefined) {
  fm.onsubmit=function(){
 	 //try not do everything on server
      //used for make sure username in right length in js
@@ -76,5 +73,5 @@ save for use in future
      	return false;
      }
      return true;
- }
+     
  }

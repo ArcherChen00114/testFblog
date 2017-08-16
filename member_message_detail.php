@@ -101,6 +101,7 @@ else{
 <style type="text/css" media="all">
 </style>
 <!--   -->
+<title>message mail</title>
 <script type="text/javascripte" src="js/member_message_detail.js"></script>
 </head>
 <body>

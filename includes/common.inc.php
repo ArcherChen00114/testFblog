@@ -24,7 +24,6 @@ define('DB_NAME','testFblog');
 //create database connection
 require 'mysql.func.php';
 require "includes/global.func.php";
-require "includes/title.inc.php";
 connect();
 set_names();
 $starttime = runtime();
@@ -45,41 +44,5 @@ if(empty($message['count'])){
 }else{
     $message_html='<strong class="read">('.$message['count'].')</strong>';
 }
-
-   if(!!$rows=fetch_array("SELECT
-                                tg_webname,
-                                tg_article,
-                                tg_blog,
-                                tg_photo,
-                                tg_skin,
-                                tg_banstring,
-                                tg_post,
-                                tg_re,
-                                tg_code,
-                                tg_register
-                            FROM
-                                system
-                           WHERE
-                                tg_id=1
-                           LIMIT 1"
-                            )){
-       $system=array();
-       $system['webname']=$rows['tg_webname'];
-       $system['article']=$rows['tg_article'];
-       $system['blog']=$rows['tg_blog'];
-       $system['photo']=$rows['tg_photo'];
-       $system['skin']=$rows['tg_skin'];
-       $system['post']=$rows['tg_post'];
-       $system['re']=$rows['tg_re'];
-       $system['code']=$rows['tg_code'];
-       $system['register']=$rows['tg_register'];
-       $system['banstring']=$rows['tg_banstring'];
-       $system=htmls($system);
-       global $system;
-       
-   }else {
-       alertBack('databse system error');
-   }
-
 
 ?>
