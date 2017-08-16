@@ -1,4 +1,8 @@
 <?php 
+/*
+ * 8/14 add timelimit for post (tested)
+ * 
+ */
 session_start();
 define('PWD',537238);
 require 'includes/common.inc.php';
@@ -14,22 +18,26 @@ if (!isset($_COOKIE['username'])){
 }
     
 if($_GET['action']=='post'){
+    if (!empty($system['code'])){
     checkCode($_POST['code'], $_SESSION['code']);
+    }
     if(!!$rows =fetch_array("SELECT
                                     tg_uniqid
                                FROM
                                     user
                               WHERE
                                     tg_username='{$_COOKIE['username']}'")){
+                                    global $system;
         //compare unipid for safty
     _uniqid($rows['tg_uniqid'], $_COOKIE['uniqid']);
+    //limit post speed
+    timed(time(), $_COOKIE['post_time'], $system['post']);
     $clean=array();
     $clean['username']=$_COOKIE['username'];
     $clean['type']=$_POST['type'];
     $clean['title']=checkPostTitle($_POST['title'],2,40);
     $clean['content']=checkPostContent($_POST['content'],2);
     $clean=mysqli_string($clean);
-    print_r($clean);
     query("INSERT INTO
                       article(
                               tg_username,
@@ -47,12 +55,13 @@ if($_GET['action']=='post'){
                               )");
     if (affected_rows()==1){
         $clean['id']=_insertID();
+        setcookie('post_time',time());
         mysqli_close($conn);
-        session_destroy();
+//         session_destroy();
         location('congraduation, your post successed','article.php?id='.$clean['id']);
     }else{
         mysqli_close($conn);
-        session_destroy();
+//         session_destroy();
         alertBack('your post failed');
          }
     }
@@ -77,7 +86,6 @@ if($_GET['action']=='post'){
 <style type="text/css" media="all">
 </style>
 <!-- 鍏朵粬鏂囨。澶村厓绱� -->
-<title>POST</title>
 </head>
 <body>
 <?php 
@@ -139,7 +147,10 @@ require 'includes/header.inc.php';
 in ubb.inc.php-->
             <textarea name="content" rows="9" ></textarea> 
             </dd>
+            
+            <?php if (!empty($system['code'])){?>
             <dd>code:<input type="text" name="code" class="text code"/><img src="image.php" id="passcode"  onclick="javascript:this.src='image.php'"/></dd>
+            <?php }?>
             <dd><input type="submit" class="submit" value="post"/></dd>
 
         </dl>

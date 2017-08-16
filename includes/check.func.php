@@ -16,6 +16,7 @@ if (!function_exists(alertBack)){
 
 function checkUsername($username,$minnum=2,$maxnum=20){
     //get the spaces out of the $username
+    global $system;
     $username=trim($username);
     if (mb_strlen($username,'utf-8')>$maxnum || mb_strlen($username,'utf-8')<$minnum){
     alertBack('usernames length should be '.$minnum.' to '.$maxnum);
@@ -26,7 +27,7 @@ function checkUsername($username,$minnum=2,$maxnum=20){
         alertBack('illegal name');
     }
     //limit special names;
-    $mg=array();
+    $mg=explode("|",$system['banstring']);
     //absolute match
     if (in_array($username, $mg)){
         alertBack('name not allowed');
@@ -170,5 +171,29 @@ function checkPostContent($string,$num){
         alertBack('content should not short than '.$num.'!');
     }
     return $string;    
+}
+function checkAutograph($string,$num){
+    if (!mb_strlen($string)>$num){
+        alertBack('content should not longer than '.$num.'!');
+    }
+    return $string;
+}
+
+function checkDirName($string,$min,$max){
+    if (mb_strlen($string,'utf-8')<$min||mb_strlen($string,'utf-8')>$max){
+        alertBack('name should not shorter than '.$min.' or longer than '.$max.'');
+    }
+}
+function checkDirPassword($string,$num){
+    if (strlen($string)<$num){
+        alertBack('password should not shorter than'.$num.'');
+    }
+    return sha1($string);
+}
+function checkURL($string){
+    if (empty($string)){
+        alertBack('URL cant be empty');
+    } 
+    return $string;
 }
 ?>
