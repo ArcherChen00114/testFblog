@@ -2,6 +2,7 @@
 if (!defined('PWD')){
     exit('Access denied');;
 }
+session_start();
 global $message_html;
 ?>
 <div id="header">
@@ -24,9 +25,12 @@ Blog of a pathfinder
         }    
     ?>
     <li><a href="blog.php">blog</a></li>
-    <li>manage</li>
+    <li><a href="photo.php">photo</a></li>
     <li>style</li>
     <?php
+    if (isset($_COOKIE['username']) && isset($_SESSION['admin'])){
+        echo'<li><a href="manage.php">manage </a></li>';
+    }
     if (isset($_COOKIE['username'])){
         echo '<li><a href="logout.php">exit</a></li>';
     }

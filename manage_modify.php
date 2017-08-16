@@ -14,7 +14,10 @@ header('Content-type:text/html charset=utf-8');
 define('SCRIPT','member_modify');
 //judge if it is a submit
 if($_GET['action']=='modify'){    
-
+    if (!empty($system['code'])){
+    checkCode($_POST['code'], $_SESSION['code']);
+    }
+    
     if(!!$rows =fetch_array("SELECT
                                    tg_uniqid 
                              FROM 
@@ -87,7 +90,7 @@ if (isset($_COOKIE['username'])){
                             FROM 
                                 user 
                             WHERE 
-                                tg_id='{$_GET['id']}'");
+                                tg_username='{$_COOKIE['username']}'");
 if($rows){
     $html=array();
     $html['username']=htmls($rows['tg_username']);
@@ -165,7 +168,11 @@ require 'includes/header.inc.php';
    <dd>email:<input type="email" name="email" class="text" value="<?php echo $html['email']?>"/></dd>
    <dd>Q  Q:<input type="qq" name="QQ" class="text" value="<?php echo $html['qq']?>"/></dd>
    <dd>autograph:<?php echo $html['switch_html']?><p><textarea name="autograph"><?php echo $html['autograph']?></textarea></p>
-   <dd><input type="submit" class="submit" value="changeinfo"/></dd>
+   
+            <?php if (!empty($system['code'])){?>
+            <dd>code:<input type="text" name="code" class="text code"/><img src="image.php" id="passcode"  onclick="javascript:this.src='image.php'"/></dd>
+            <?php }?>
+            <dd><input type="submit" class="submit" value="changeinfo"/></dd>
    </dl>
    </form>
    </div>

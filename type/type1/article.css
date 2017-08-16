@@ -50,6 +50,12 @@
 	color:orange;
 }
 
+#article div.content .detail p.autograph{
+	color:#666;
+	border-top:1px dashed;
+	margin:5px 0;
+	width:60%;
+}
 #article div.content{
 	float:right;
 	width:680px;
@@ -72,7 +78,21 @@
 	height:40px;
 	line-height:40px;
 }
-#article div.content h3{
+#article div.content h3 span{
+	font-size:12px;
+	font-weight:normal;
+	color:#06f;
+}
+#article div.content h3 span a{
+text-decoration:none;
+	color:#06f;
+	}
+#article div.content h3 span a:hover{	
+	color:#f60;
+	
+text-decoration:underline;	
+}
+#article div.content h3 img{
 	articleion:relative;
 	top:2px;
 }
@@ -92,6 +112,11 @@
 	color:#666;
 	font-size:14px;
 	padding:10px 0 0 0;
+}
+#article div.content .read p{
+
+	padding: 0 0 5px 0;
+	text-align:right;
 }
 #atrticle div.content .detail a{
 	text-decoration:none;

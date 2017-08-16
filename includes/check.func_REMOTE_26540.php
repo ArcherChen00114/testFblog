@@ -178,16 +178,4 @@ function checkAutograph($string,$num){
     }
     return $string;
 }
-
-function checkDirName($string,$min,$max){
-    if (mb_strlen($string,'utf-8')<$min||mb_strlen($string,'utf-8')>$max){
-        alertBack('album name should not shorter than '.$min.' or longer than '.$max.'');
-    }
-}
-function checkDirPassword($string,$num){
-    if (strlen($string)<$num){
-        alertBack('password should not shorter than'.$num.'');
-    }
-    return sha1($string);
-}
 ?>

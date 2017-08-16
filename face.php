@@ -24,7 +24,6 @@ require 'includes/common.inc.php';
 <style type="text/css" media="all">
 </style>
 <!-- 其他文档头元素 -->
-<title>Register Page Icon Choose</title>
 </head>
 <body>
 

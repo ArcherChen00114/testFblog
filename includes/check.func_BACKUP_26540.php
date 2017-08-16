@@ -178,6 +178,7 @@ function checkAutograph($string,$num){
     }
     return $string;
 }
+<<<<<<< HEAD
 
 function checkDirName($string,$min,$max){
     if (mb_strlen($string,'utf-8')<$min||mb_strlen($string,'utf-8')>$max){
@@ -190,4 +191,6 @@ function checkDirPassword($string,$num){
     }
     return sha1($string);
 }
+=======
+>>>>>>> acbfb97889485702ec8e7c1fb78986428ae8789a
 ?>
