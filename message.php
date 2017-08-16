@@ -9,9 +9,7 @@ if (!isset($_COOKIE['username'])){
     alertClose('you have to log in');
 }
 if($_GET['action']=='write'){
-    if (!empty($system['code'])){
     checkCode($_POST['code'], $_SESSION['code']);
-    }
     if(!!$rows=fetch_array("SELECT 
                                   tg_uniqid 
                             FROM  
@@ -41,11 +39,11 @@ if($_GET['action']=='write'){
     ");
     if (affected_rows()==1){
         mysqli_close($conn);
-//         session_destroy();
+        session_destroy();
         alertClose('message sent');
     }else{
         mysqli_close($conn);
-//         session_destroy();
+        session_destroy();
         alertBack('message sent failed');}
     }else{
         alertBack('uniqid error');
@@ -75,6 +73,7 @@ else{
 <style type="text/css" media="all">
 </style>
 <!--   -->
+<title>message page</title>
 <script type="text/javascript" src="js/code.js"></script>
 <script type="text/javascript" src="js/message.js"></script>
 </head>
@@ -89,11 +88,8 @@ require 'includes/header.inc.php';
   <dl>
     <dd><input type="text" readonly="readonly" value="TO:<?php echo $html['touser']?>" class="text"/></dd>
     <dd><textarea name="content" rows="" cols=""></textarea></dd>
-    
-            <?php if (!empty($system['code'])){?>
-            <dd>code:<input type="text" name="code" class="text code"/><img src="image.php" id="passcode"  onclick="javascript:this.src='image.php'"/></dd>
-            <?php }?>
-            <dd><input type="submit" class="submit" value="send message"/></dd> 
+    <dd>code:<input type="text" name="code" class="text code"/><img src="image.php" id="passcode"  onclick="javascript:this.src='image.php'"/></dd>
+    <dd><input type="submit" class="submit" value="send message"/></dd> 
   </dl>
   </form>
 </div>

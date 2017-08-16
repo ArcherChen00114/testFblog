@@ -31,19 +31,14 @@ define('SCRIPT','login');
 login_state();
 if ($_GET['action']=='login'){
     global $conn;
-    if (!empty($system['code'])){
     checkCode($_POST['code'], $_SESSION['code']);
-    }
-    
     $clean=array ();
     $clean['userName']=checkUsername($_POST['username'],2,20);
     $clean['passWord']=checkPassword($_POST['password'],6);
     $clean['time']=check_time($_POST['time']);
 //     print_r($clean);//saved all info in array clean.
     if(!!$rows = fetch_array("SELECT 
-                                    tg_username,
-                                    tg_uniqid,
-                                    tg_level
+                                    tg_username,tg_uniqid 
                                 FROM 
                                     user 
                                WHERE 
@@ -60,16 +55,16 @@ if ($_GET['action']=='login'){
                      WHERE
                           tg_username='{$rows['tg_username']}'"
                               );
-
-    cookies($rows[tg_username], $rows[tg_uniqid],$clean['time']);
-    if($rows['tg_level']==1){
-        $_SESSION['admin']=$rows['tg_username'];
-    }
+    echo $rows[tg_username];
+    echo $rows[tg_uniqid];
     mysqli_close($conn);
-    location(null, 'member.php');
+    session_destroy();
+    cookies($rows[tg_username], $rows[tg_uniqid],$clean['time']);
+    location(null, 'newfile.php');
     }else {
     mysqli_close($conn);
-    //     print_r($rows);
+    session_destroy();
+//     print_r($rows);
 //     location('wrong username or password or unactivted', 'login.php');
 }
 }
@@ -85,6 +80,7 @@ if ($_GET['action']=='login'){
 <style type="text/css" media="all">
 </style>
 <!--   -->
+<title>login page</title>
 </head>
 <body>
 <?php 
@@ -98,10 +94,7 @@ require 'includes/header.inc.php';
             <dd>username:<input type="text" name="username" class="text"/></dd>
             <dd>password:<input type="password" name="password" class="text"/></dd>
             <dd>staytime:<input type="radio" name="time" value="0" checked="checked"/>dontsave<input type="radio" name="time" value="1" checked="checked"/>one day<input type="radio" name="time" value="2" checked="checked"/>one week</dd>
-            
-            <?php if (!empty($system['code'])){?>
             <dd>code:<input type="text" name="code" class="text code"/><img src="image.php" id="passcode"  onclick="javascript:this.src='image.php'"/></dd>
-            <?php }?>
             <dd><input type="submit" class="button location" value="register" id="location"/></dd>
             <dd><input type="submit" class="button" value="login"/></dd>
             

@@ -61,13 +61,6 @@
 	border-bottom:1px dashed #999;
 	padding:10px 0;	
 }
-#member #member_main dl dd p textarea{
-	width:220px;
-	height:60px;
-	border:1px deashed #333;
-	background:#fff;
-	margin:5px 0 0 70px;
-}
 #member #member_main dl dd input.text{
 	width:220px;
 	height:19px;

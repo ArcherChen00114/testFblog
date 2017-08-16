@@ -9,20 +9,14 @@ define('SCRIPT','register');
 //judge if it is a submit
 global $conn;
 login_state();
-global $system;
 if ($_GET['action']=='register'){
-    if (empty($system['register'])){
-        exit('register is not allow in this time');
-    }
 //     var_dump($conn);
 //     for safety you need to make sure the code is right
 //     if(!$_POST['code']==$_SESSION['code']){
 //         alertBack('you did not enter right code');
 //     }make it a function in  global function in order to 
 //// use that function at any site.
-    if (!empty($system['code'])){
     checkCode($_POST['code'], $_SESSION['code']);
-    }
     //use uniqid() to protect the web system
     // protect a unique string. sha1(uniqid(rand(),true))
     $clean=array ();//to create a new array save info
@@ -122,6 +116,7 @@ $_SESSION['uniqid']=$uniqid=sha1Uniqid();
 <style type="text/css" media="all">
 </style>
 <!-- 鍏朵粬鏂囨。澶村厓绱� -->
+<title>register page</title>
 </head>
 <body>
 <?php 
@@ -131,7 +126,6 @@ require 'includes/header.inc.php';
     <h2>
     register
     </h2>
-    <?php if(!empty($system['register'])){?>
     <form method="post" action="register.php?action=register" name="register">
         <input type='hidden' name='uniqid' value="<?php echo $uniqid ?>" />
         <dl>
@@ -153,17 +147,12 @@ require 'includes/header.inc.php';
             
             <dd>email:<input type="text" name="email" class="text"/>(*)</dd>
             <dd>QQ:<input type="text" name="QQ" class="text"/></dd>
-            <?php if (!empty($system['code'])){?>
             <dd>code:<input type="text" name="code" class="text code"/><img src="image.php" id="passcode"  onclick="javascript:this.src='image.php'"/></dd>
-            <?php }?>
             <dd><input type="submit" class="submit" value="register"/></dd>
             <dd>the (*) means it have to entered content</dd>
         </dl>
     
     </form>
-    <?php } else {
-        echo '<h4 style="text-align:center"> this web close register. </4>';}
-    ?>
 
 </div>
 

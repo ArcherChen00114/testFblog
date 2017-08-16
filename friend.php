@@ -37,10 +37,7 @@ if (!isset($_COOKIE['username'])){
 }
 //add friend
 if($_GET['action']=='add'){
-if (!empty($system['code'])){
     checkCode($_POST['code'], $_SESSION['code']);
-    }
-    
 }
     if(!!$rows=fetch_array("SELECT 
                                   tg_username 
@@ -90,11 +87,11 @@ if (!empty($system['code'])){
 
     if (affected_rows()==1){
         mysqli_close($conn);
-//         session_destroy();
+        session_destroy();
         alertClose('好友添加成功');
     }else{
         mysqli_close($conn);
-//         session_destroy();
+        session_destroy();
         alertClose('好友添加失败');}
 if (isset($_GET['id'])){
     if(!!$rows=fetch_array("SELECT 
@@ -128,7 +125,7 @@ else{
 <style type="text/css" media="all">
 </style>
 <!--   -->
-
+<title>add friend</title>
 <script type="text/javascript" src="js/code.js"></script>
 <script type="text/javascript" src="js/message.js"></script>
 </head>
@@ -143,9 +140,8 @@ require 'includes/header.inc.php';
   <dl>
     <dd><input type="text" readonly="readonly" value="TO:<?php echo $html['touser']?>" class="text"/></dd>
     <dd><textarea name="content" rows="" cols="">I'd like to make friend with you</textarea></dd>
-    <?php if (!empty($system['code'])){?>
     <dd>code:<input type="text" name="code" class="text code"/><img src="image.php" id="passcode"  onclick="javascript:this.src='image.php'"/></dd>
-    <?php }?><dd><input type="submit" class="submit" value="add friend"/></dd> 
+    <dd><input type="submit" class="submit" value="add friend"/></dd> 
   </dl>
   </form>
 </div>

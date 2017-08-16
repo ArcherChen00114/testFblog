@@ -6,10 +6,8 @@ require 'includes/common.inc.php';
 $html=htmls(_getXML('new.xml'));
 //get post list
 global $pagesize,$pagenumber;
+page("SELECT tg_id FROM article",10);
 global $conn;
-global $system;
-page("SELECT tg_id FROM article WHERE tg_reid=0",$system['article']);
-
 $result=query("SELECT
                         tg_id,
                         tg_type,     
@@ -37,6 +35,7 @@ $result=query("SELECT
 <style type="text/css" media="all">
 </style>
 <!-- 其他文档头元素 -->
+<title>Test First Blog</title>
 <script type="text/javascript" src="js/blog.js"></script>
 </head>
 <body>
