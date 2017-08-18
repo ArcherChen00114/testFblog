@@ -4,14 +4,12 @@
 window.onload=function(){
 	code();
 	var ubb=document.getElementById('ubb');
-
+	var ubbimg=ubb.getElementsByTagName('img');
 	var fm=document.getElementsByTagName('form')[0];
 	var font=document.getElementById('font');
 	var color=document.getElementsByTagId('color');
 	var html=document.getElementsByTagName('html');
 	
-	if (fm != 'undefined'){
-	fm.onsubmit=function(){
 	 if(fm.title.value.length<2||fm.title.value.length>40){
 		 alert('title should longer then 2 and shorter than 40');
 		 fm.title.value="";
@@ -31,15 +29,13 @@ window.onload=function(){
      	return false;
      }
      return true;
-     }
-}
+     
+	 }
 	
 	
 	
 	
 	var q=document.getElementById('q');
-	
-if (q!=null){
 	var qa=q.getElementsByTagName('a');
 	
 	qa[0].onclick=function(){
@@ -51,16 +47,11 @@ if (q!=null){
 	qa[2].onclick=function(){
 		window.open('q.php?num/1/1','q','width=400px,height=400px,scrollbar=1')
 	}
-	if (font!=null){
+	
 	html.onmouseup=function(){
 		font.style.display='none';
 		color.style.display='none';
-		}
 	};
-}
-	
-if (ubb!=null){
-	var ubbimg=ubb.getElementsByTagName('img');
 	ubbimg[0].onclick=function(){
 		font.style.display='block';
 	};
@@ -71,12 +62,10 @@ if (ubb!=null){
 		{
 		fm.content.value +=string;
 		}
-	if (fm!='undefined'){
 		fm.t.onclick=function(){
 			showcolor(this.value);
 		}
 	}
-}
     
 	ubbimg[3].onclick=function(){
 		content('[i][/i]');
@@ -101,7 +90,6 @@ if (ubb!=null){
 		else{
 			alert('url not legal');}
 	}
-  }
 };	
 	
 	ubbimg[9].onclick=function(){
@@ -139,7 +127,7 @@ if (ubb!=null){
     ubbimg[19].onclick=function(){
     	fm.content.rows-=2;
     };
-   
+}   
 
     function font(size){
     	document.getElementsByTagName('form')[0].content.value +='[size='+size+'][/size]';
@@ -151,23 +139,6 @@ if (ubb!=null){
  	 var message=document.getElementsByName('message');
  	 var friend=document.getElementsByName('friend');
  	 var gift=document.getElementsByName('gift');
-     var re=document.getElementsByName('re');
-     var yinyong=document.getElementsByName('yinyong');
- 	 
-     
-     for(var i=0;i<re.length;i++){
-  	 	re[i].onclick=function(){
-  	      document.getElementsByTagName('form')[0].title.value=this.title;		
-     	}
-  	 }
-     
-     for(var i=0;i<yinyong.length;i++){
-   	 	re[i].onclick=function(){
-   	      document.getElementsByTagName('form')[0].title.value=this.title;
-   	      this.content=document.getElementsByTagName('form')[0].content.value.'\n------------------------------------------------------------';
-      	}
-   	 }
-     
  	 for(var i=0;i<message.length;i++){
  	 	message[i].onclick=function(){
  	 		centerWindow('message.php?id='+this.title,'message',250,400);

@@ -34,6 +34,7 @@ if(isset($_GET['num'])&&isset($_GET['path'])){
 <style type="text/css" media="all">
 </style>
 <!-- 其他文档头元素 -->
+<title>Icon Choose</title>
 </head>
 <body>
 

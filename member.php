@@ -59,6 +59,8 @@ else {
 <meta http-equiv="Content-Language" content="zh-CN" />
 <style type="text/css" media="all">
 </style>
+
+<title>member center</title>
 </head>
 <body>
 <?php 

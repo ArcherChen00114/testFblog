@@ -22,9 +22,8 @@ header('Content-type:text/html charset=utf-8');
 define('SCRIPT','blog');
 //get info from sql as array
 //first element is query,second element means how many users per page
-global $pagesize,$pagenumber,$system;
-echo $system['article'];
-page("SELECT tg_id FROM user",$system['blog']);
+global $pagesize,$pagenumber;
+page("SELECT tg_id FROM user",15);
 global $conn;
 $result=query("SELECT 
                      tg_id,
@@ -48,6 +47,7 @@ $result=query("SELECT
 <style type="text/css" media="all">
 </style>
 <!--   -->
+<title>blog page</title>
 <script type="text/javascript" src="js/blog.js"></script>
 </head>
 <body>

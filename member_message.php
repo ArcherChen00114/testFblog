@@ -67,6 +67,7 @@ $result=query("SELECT
 <style type="text/css" media="all">
 </style>
 <!--   -->
+<title>message mail</title>
 <script type="text/javescript" src="js/member_message.js"></script>
 </head>
 <body>

@@ -2,18 +2,6 @@
 if (!defined('PWD')){
     exit('Access denied');;
 }//for safe
-
-function manage_login(){
-    if((!isset($_COOKIE['username']))||(!isset($_SESSION['admin']))){
-        alertBack('illegal');
-    }
-}
-
-function timed($NowTime,$PreTime,$second){
-if ($NowTime()-$PreTime<$second){
-        alertBack('please dont post too many articles in short time');
-    }
-}
 /*
  * runtime used to get program running time
 * @access public
@@ -104,29 +92,6 @@ function _uniqid($mysqli_uniqid,$_COOKIES_uniqid){
     if ($mysqli_uniqid!=$_COOKIES_uniqid){
         alertBack('uniqid error');
     }
-}
-
-function thumb($filename,$percent){
-    header('Content-type:image/png');
-    $n=explode('.','face/001.jpg');
-    //define a variable to decide which css it should choose
-    
-    list($width,$height)=getimagesize($filename);
-    $new_width=$width*$percent;
-    $new_height=$height*$percent;
-    $new_image=imagecreatetruecolor($new_width, $new_height);
-    switch($n[1]){
-        case'jpg':$image=imagecreatefromjpeg($filename);
-        break;
-        case'png':$image=imagecreatefrompng($filename);
-        break;
-        case'gif':$image=imagecreatefromgif($filename);
-        break;
-    }
-    imagecopyresampled($new_image, $image, 0, 0, 0, 0, $new_width, $new_height, $width, $height);
-    imagepng($new_image);
-    imagedestroy($image);
-    imagedestroy($new_image);
 }
 
 function _setXml($xmlfile,$clean){
@@ -220,7 +185,7 @@ function page($sql,$size){
     $pagenumber=($page-1)*10;
     if ($num==0){
         $pageabsolute=1;
-    }elseif($pagesize!=0){
+    }else{
         $pageabsolute=ceil($page/$pagesize);
     }
     if ($page>$pageabsolute){
