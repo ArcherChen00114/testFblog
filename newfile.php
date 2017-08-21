@@ -6,8 +6,11 @@ require 'includes/common.inc.php';
 $html=htmls(_getXML('new.xml'));
 //get post list
 global $pagesize,$pagenumber;
-page("SELECT tg_id FROM article",10);
 global $conn;
+global $system;
+$percent=0.4;
+page("SELECT tg_id FROM article WHERE tg_reid=0",$system['article']);
+
 $result=query("SELECT
                         tg_id,
                         tg_type,     
@@ -23,6 +26,18 @@ $result=query("SELECT
                     DESC
                    LIMIT 
                         $pagenumber,$pagesize;");
+//new picture, write public album in '()'
+$photo=fetch_array("SELECT
+                        max(tg_id) AS id,
+                        tg_name AS name,
+                        tg_url AS url
+                  FROM
+                        photo
+                 WHERE
+                        tg_sid in (SELECT tg_id FROM dir WHERE tg_type=0)
+              ORDER BY  
+                        tg_date DESC
+                 LIMIT 1")
 
 
 ?>
@@ -35,7 +50,6 @@ $result=query("SELECT
 <style type="text/css" media="all">
 </style>
 <!-- 其他文档头元素 -->
-<title>Test First Blog</title>
 <script type="text/javascript" src="js/blog.js"></script>
 </head>
 <body>
@@ -74,7 +88,8 @@ require 'includes/header.inc.php';
    </dl>
 </div>
 <div id="pics">
- <h2>new pics</h2>
+ <h2>new pics--<?php echo $photo['name']?></h2>
+ <a href="photo_detail.php?id=<?php echo $photo['id']?>"><img src="thumb.php?filename=<?php echo $photo['url']?>&percent=<?php echo $percent?>" alt="<?php echo $photo['name']?>" /></a>
 </div>
 
 <?php 

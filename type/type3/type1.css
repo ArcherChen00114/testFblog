@@ -1,0 +1,165 @@
+@CHARSET "UTF-8";
+*{
+	padding:10;
+	margin:0;
+}
+body{
+	width:960px;
+	magrin:0 auto;
+	background:#fff;
+}
+#header{
+	
+	font-family:"Sans-serif";	
+	width:auto;
+	height:150px;
+	border:2px solid #ccc;
+	border-radius:15px;
+	margin:10px 0;
+}
+#header h1{
+	font-size:30px;
+    width:auto;
+	display:block;
+	height:60px;
+	background:url(remain empty for an pic) no-repeat;
+	/* dont forgot to add a picture here to be background*/
+}
+#header ul{
+	font-size:10px;
+	text-align:right;
+	padding:30px 50px 0 0;
+}
+#header ul li{
+	display:inline;
+}
+#header ul li a{
+	text-decoration:none;
+	color:#333;
+}
+#header ul li a:hover{/* hover mean when the pointer touch it, it change*/
+	text-decoration:underline;
+	color:#f33;
+}
+#header ul li strong.noread{
+	background:url(images/noread.gif)no-repeat left center;
+	padding: 0 0 0 15px;
+}
+#header ul li strong.read{
+	background:url(images/read.gif)no-repeat left center;
+	padding: 0 0 0 18px;
+}
+h2{font-size:14px;
+background:#eee;
+line-height:25px;
+text-indent:10px;/*make the text intent*/
+}
+#page_num{
+	height:20px;
+	clear:both;
+	padding:10px 0 0 0;
+	position:relative;
+	font-size:12px;
+}
+#page_num ul{
+	postion:abosolute;
+	height:20px;
+	right:10px;
+}
+#page_num ul li{
+	float:left;
+	width:20px;
+	height:20px;
+}
+#page_num ul li a{
+	display:block;
+	width:20px;
+	height:20px;	
+	line-height:20px;
+	border:1px solid #333;
+	text-align:center;
+	text-decoration:none;
+}
+#page_num ul li a:hover,#page_num ul li a.selected{
+	background:#666;
+	gont-weight:bold;
+	color:#fff;
+}
+#page_text{
+	height:20px;
+	clear:both;
+	padding:10px 0;
+	font-size:12px;
+}
+#page_text ul{
+	text-align:center;
+}
+#page_text ul li{
+	display:inline;
+}
+#blog{
+	width:auto;
+	height:600px;
+	border:2px solid #ccc;
+    font-size:12px;
+}
+#member #member_sidebar{
+	width:300px;
+	height:600px;
+	margin:15px;
+	border:1px dashed #999;
+	float:left;
+}
+#member #member_main{
+	width:550px;
+	height:500px;
+	margin:15px;
+	border:1px dashed #999;
+	float:right;
+}
+#member h2{
+	text-indent:0;
+	text-align:center;
+	height:30px;
+	line-height:30px;
+}
+#memeber #member_sidebar dl{
+	width:250px;
+	background:red;
+	margin:15px auto;
+	text-align:center;
+}
+#nmember #member_sidebar dl dt{
+	heigth:40px;
+	line-height:40px;
+	background:gray;
+	font-weight:bold;
+	text-align:center;
+	color:#fff;
+}
+#member #member_sidebar dl dd{
+    heigth:40px;
+	line-height:40px;
+	background:#eee;
+	font-weight:bold;
+	text-align:center;
+	color:#fff;
+}
+#member #member_sidebar dl dd a{
+	display:block;
+	color:#333;
+	text_decoration:none;
+}
+#footer{
+	clear:both;
+	width:auto;
+	height:60px;
+	border:2px solid #ccc;
+	border-radius:15px;
+	text-align:center;
+}
+#footer p{
+	font-size:12px;
+	letter-spacing:1px;
+	padding:2px 0 0 0;
+}

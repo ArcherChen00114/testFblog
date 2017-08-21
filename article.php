@@ -2,7 +2,32 @@
 
 /* define passcode of web
  *   require include files
- *   
+ *     reply model{
+ *                  checkcode
+ *                  get uniqid and username,if username is same--1
+ *                  get info to $clean array
+ *                  insert data into sql database
+ *                  if data affected count+  +--2
+ *                  --2 else alertback
+ *                  --1 else alertback
+ *                  }
+ *    floor reply model{
+ *                      check id
+ *                              check if it is a reply(reid=0)
+ *                              not a reply then can read it and readcount++
+ *                      get article info into $html
+ *                          then check user
+ *                      if he has replied or posted, give him right to change his article(modify button)
+ *                          show modified time
+ *                          show reply button
+ *                      get host userinfo (existed then move to next part)
+ *                          page
+ *                      }
+ *     <from>
+ *     show right floor number, if it is page1 floor1,it is host
+ *     and 2nd 3rd have different name
+ *     then every floor have reply and yinyong button(in login state)
+ * then textarea for user
 
 
 
@@ -15,18 +40,56 @@ header('Content-type:text/html charset=utf-8');
 //define a variable to decide which css it should choose
 define('SCRIPT','article');
 global $conn;
+global $system;
+
+
+if($_GET['action']=='nice'&& isset($_GET['id']) &&isset($_GET['on'])){
+    if(!!$rows =fetch_array("SELECT
+                                    tg_uniqid
+                                FROM
+                                    user
+                                WHERE
+                                    tg_username='{$_COOKIE['username']}'"))
+    {
+    _uniqid($rows['tg_uniqid'], $_COOKIE['uniqid']);
+    //set or unset nice post
+    query("UPDATE 
+                    article
+            SET     
+                    tg_nice='{$_GET['on']}'
+            WHERE 
+                    tg_id='{$_GET['id']}'"); 
+    if (affected_rows()==1){
+        
+        mysqli_close($conn);
+        //         session_destroy();
+        location('nice post set success','article.php?id='.$_GET['id']);
+    }
+    else{
+        mysqli_close($conn);
+        alertBack('nice post set failed');
+    }
+    } else {alertBack('illegal');
+    }
+} else {alertBack('illegal');}
+
 //get info from sql as array
 //first element is query,second element means how many users per page
 if ($_GET['action']=='reply'){
+    if (!empty($system['code'])){
     checkCode($_POST['code'], $_SESSION['code']);
+    }
     if(!!$rows =fetch_array("SELECT
-        tg_uniqid
-        FROM
-        user
-        WHERE
-        tg_username='{$_COOKIE['username']}'")){
+                    tg_uniqid,
+                    tg_username
+                FROM
+                    user
+                WHERE
+                    tg_username='{$_COOKIE['username']}'")){
         //compare unipid for safty
+
     _uniqid($rows['tg_uniqid'], $_COOKIE['uniqid']);
+    timed(time(),$_COOKIE['article_time'],$system['re']);
     $clean=array();
     $clean['reid']=$_POST['reid'];
     $clean['type']=$_POST['type'];
@@ -50,6 +113,7 @@ if ($_GET['action']=='reply'){
                                NOW()
                                )");
     if (affected_rows()==1){
+        setcookie('article_time',time());
         query("UPDATE
                      article
                   SET
@@ -60,11 +124,12 @@ if ($_GET['action']=='reply'){
                      tg_id='{$clean['reid']}'");
         $clean['id']=_insertID();
         mysqli_close($conn);
-        session_destroy();
+//         session_destroy();
         location('congraduation, your reply successed','article.php?id='.$clean['reid']);
-    }else{
+    }
+    else{
         mysqli_close($conn);
-        session_destroy();
+//         session_destroy();
         alertBack('your reply failed');
         }
     }else {
@@ -72,6 +137,7 @@ if ($_GET['action']=='reply'){
     }
 }
 $rows=array();
+//confirm this id existed
 if (isset($_GET['id'])){
     if(!!$rows=fetch_array("SELECT
                                    tg_id,
@@ -81,6 +147,8 @@ if (isset($_GET['id'])){
                                    tg_content,
                                    tg_readcount,
                                    tg_commentcount,
+                                   tg_nice,
+                                   tg_last_modifydate,
                                    tg_date
                                FROM
                                    article
@@ -88,6 +156,7 @@ if (isset($_GET['id'])){
                                    tg_reid=0
                                 AND
                                    tg_id='{$_GET['id']}'")){
+                                   //make sure this article's id exist, and it is not an reply of a topic
                                  
        query("UPDATE
                     article
@@ -95,6 +164,7 @@ if (isset($_GET['id'])){
                     tg_readcount=tg_readcount+1
                WHERE
                     tg_id='{$_GET['id']}'");
+       //them readcount ++
        $html=array();
        $html['reid']=$rows['tg_id'];
        $html['username_subject']=$rows['tg_username'];
@@ -103,12 +173,33 @@ if (isset($_GET['id'])){
        $html['content']=$rows['tg_content'];
        $html['readcount']=$rows['tg_readcount'];
        $html['commendcount']=$rows['tg_commendcount'];
+       $html['nice']=$rows['tg_nice'];
        $html['date']=$rows['tg_date'];
+       $html['lastmodifydate']=$rows['tg_last_modifydate'];
        $html=htmls($html);
        
+       //put all data into
+       //global
        global $id;
        $id='id='.$html['reid'].'&';
-       //this part used for get user info
+       //make change topic available
+       if ($html['username_subject'] == $_COOKIE['username']||isset($_SESSION['admin'])){
+           $html['subject_modify']='[<a herf="article_modify.php?id'.$html['reid'].'"change topic]';
+           //if this is host, then make thi article able to change for this user
+       }
+       
+       //read last modify data
+       if ($html['lastmodifydate']!='0000-00-00 00:00:00'){
+           $html['lastmodifydatestring']='this post has modified by'.$html['username_subject'].'at'.$html['lastmodifydate'].'';
+           //if html lastmodifydate is changed, then show when did it changed
+       }
+       //reply for host
+       if($_COOKIE['username']){
+           $html['re']='<span><a href="#ree" name="re" title="reply for host'.$html['username_subject'].'"</span>';
+           //show that reply button after every floor 
+       }
+       
+       //this part used for get hostuser info
        if(!!$rows=fetch_array("SELECT
                                         tg_id,
                                         tg_face,
@@ -184,8 +275,14 @@ require 'includes/header.inc.php';
 <h2>
 article page
 </h2>
-
-<?php if($page==1){?>
+<?php if (!empty($html['nice'])){ ?>
+<img src="" alt="nice" class="nice" />
+<?php }?>
+<?php if($html['readcount']>=400 && $html['commentcount']>=20) {?>
+<img src="" alt="hot" class="hot" />
+<?php }?>
+<?php if($page==1){
+//make the host looks different?>
 <div id="subject">
 <dl>
    <dl>
@@ -202,13 +299,14 @@ article page
 <div class="content">
      <div class="user">
 <!--      this span shows the 'floor' number -->
-       <span>#<?php echo ($i+(($page-1)*$pagesize));?></span><?php echo $html['username']?> |posted at <?php echo $html['date']?>
+       <span><?php echo $html['subject_modify']?> #<?php echo ($i+(($page-1)*$pagesize));?></span><?php echo $html['username_subject']?> |posted at <?php echo $html['date']?>
      </div>
      <h3><?php echo $html['title']?><img scr="images/icon<?php echo $html['type']?>.gif" alt="icon"></img></h3>
      <div class="detail">
      <?php echo $html['content']?>
      </div>
      <div class="read">
+     <p><?php echo $html['lastmodifydatestring']?></p>
      readcount:<?php echo $html['readcount']?>
      commendcount:<?php echo $html['commendcount']?>
      </div>
@@ -233,6 +331,8 @@ while(!!$rows=fetch_array_list($result)){
                                 tg_sex,
                                 tg_email,
                                 tg_qq
+                                tg_switch,
+                                tg_autograph
                             FROM
                                 user        
                             WHERE
@@ -242,18 +342,27 @@ while(!!$rows=fetch_array_list($result)){
         $html['face']=$rows['tg_face'];
         $html['email']=$rows['tg_email'];
         $html['qq']=$rows['tg_qq'];
+        $html['switch']=$rows['tg_switch'];
+        $html['autograph']=$rows['tg_autograph'];
         $html=htmls($html);}
 
-        if(($i=$page)==2){
+        if($page==1&&$i==2){
             if($html['username']==$html['username_subject']){
                 $html['username_html'].='[Host]';
             }else {
                 $html['username_html'].='[sofa]';                
             }
+        } else {
+                $html['username_html'];
+            }
+            
+        if ($_COOKIE['username']){
+        $html['re']='<span>[<a href="#ree" name="re" title="reply for '.($i+(($page-1)*$pagesize)).''.$html['username'].'" >reply</a>]</span>';
+        $html['re']='<span>[<a href="#ree" name="yinyong" title="reply for '.($i+(($page-1)*$pagesize)).''.$html['username'].'" >yinyong</a>]</span>';
         }
+        //show autograph
+}
         
-        else {
-        }
     ?>
 <div class="re">
 <dl>
@@ -270,17 +379,27 @@ while(!!$rows=fetch_array_list($result)){
 </dl>
 <div class="content">
      <div class="user">
-       <span>#num</span><?php echo $html['username']?> |posted at <?php echo $html['date']?>
+       <span>
+       <?php if (!empty($html['nice'])){?>
+       [<a href="article.php?action=nice&on=1&id=<?php echo $html['reid']?>">set nice</a>]
+       <?php } else {?>
+       [<a href="article.php?action=nice&on=0&id=<?php echo $html['reid']?>">unset nice</a>]
+       <?php echo $html['subject_modify']?>1#</span><?php echo $html['username']?> |posted at <?php echo $html['date']?>
      </div>
-     <h3>title:<?php echo $html['retitle']?><img scr="images/icon<?php echo $html['type']?>.gif" alt="icon"></img></h3>
+     <h3>title:<?php echo $html['retitle']?><img scr="images/icon<?php echo $html['type']?>.gif" alt="icon" /><?php echo $html['re'] ?></h3>
      <div class="detail">
        <?php echo ubb($html['content'])?>
+       <?php 
+       if ($html['switch']==1){
+            echo '<p class="autograph">'.ubb($html['autograph']).'</p>';
+        }?>
      </div>
    </div>
 </div>
 <p class="line"></p>
 <?php }?>
 <?php if(isset($_COOKIE['username'])){?>
+<a name="ree"></a>
  <form method="post" action='?action='reply'>
      <input type="hidden" name="reid" value="<?php echo $html['reid'] ?>"></input>
      <input type="hidden" name="type" value="<?php echo $html['reid'] ?>"></input>
@@ -289,12 +408,11 @@ while(!!$rows=fetch_array_list($result)){
             <dd>
             <dd>title:<input type="text" name="title" class="text" value="RE:<?php echo $html['title']?>"/>(*)</dd>
             <dd id="q">image: <a href:"javascript:;">image[1]</a> <a href:"javascript:;">image[2]</a> <a href:"javascript:;">image[3]</a></dd>
-            <dd>
             <div id="ubb">
               <img src="" title="font size" alt="font size"/>
               <img src="" title="line" alt="line"/>
 <!--   its too many of them and i have no pics, abort it till it
- is still practice     -->
+       is still practice     -->
             <div id="font">
                <strong onclick="font(10)">10px</strong>
                <strong onclick="font(12)">12px</strong>
@@ -321,7 +439,9 @@ while(!!$rows=fetch_array_list($result)){
 in ubb.inc.php-->
             <textarea name="content" rows="9" ></textarea> 
             </dd>
+            <?php if (!empty($system['code'])){?>
             <dd>code:<input type="text" name="code" class="text code"/><img src="image.php" id="passcode"  onclick="javascript:this.src='image.php'"/></dd>
+            <?php }?>
             <dd><input type="submit" class="submit" value="post"/></dd>
             </dd>
      </dl>

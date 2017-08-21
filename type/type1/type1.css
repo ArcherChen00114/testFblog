@@ -45,6 +45,25 @@ body{
 	background:url(images/noread.gif)no-repeat left center;
 	padding: 0 0 0 15px;
 }
+
+#header ul li.skin{
+	position:relative;
+}
+#header ul li dl#skin{
+	position:absolute;
+	top:20px;
+	left:-30px;
+	border:1px dashed #333;
+	width:80px;
+	height:100px;
+	background:#fff;
+	text-align:center;
+	padding:5px;
+	display:none;
+}
+#header ul li dl#skin dd{
+	padding:2px;
+}
 #header ul li strong.read{
 	background:url(images/read.gif)no-repeat left center;
 	padding: 0 0 0 18px;

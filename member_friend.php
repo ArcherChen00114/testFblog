@@ -132,7 +132,6 @@ $result=query("SELECT
 <style type="text/css" media="all">
 </style>
 <!--   -->
-<title>friends list</title>
 <script type="text/javescript" src="js/member_message.js"></script>
 </head>
 <body>

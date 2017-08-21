@@ -10,7 +10,10 @@ if (!isset($_COOKIE['username'])){
 }
 //send gift
 if($_GET['action']=='send'){
+if (!empty($system['code'])){
     checkCode($_POST['code'], $_SESSION['code']);
+    }
+    
     //if code right?
     if(!!$rows=fetch_array("SELECT 
                                   tg_uniqid 
@@ -46,11 +49,11 @@ if($_GET['action']=='send'){
     ");
     if (affected_rows()==1){
         mysqli_close($conn);
-        session_destroy();
+//         session_destroy();
         alertClose('gift sent');
     }else{
         mysqli_close($conn);
-        session_destroy();
+//         session_destroy();
         alertBack('gift sent failed');}
     }else{
         alertBack('uniqid error');
@@ -80,7 +83,6 @@ else{
 <style type="text/css" media="all">
 </style>
 <!--   -->
-<title>gift page</title>
 <script type="text/javascript" src="js/code.js"></script>
 <script type="text/javascript" src="js/message.js"></script>
 </head>
@@ -104,8 +106,10 @@ require 'includes/header.inc.php';
        </select>
     </dd>
     <dd><textarea name="content" rows="" cols=""> you are amazing! A gift for you!</textarea></dd>
-    <dd>code:<input type="text" name="code" class="text code"/><img src="image.php" id="passcode"  onclick="javascript:this.src='image.php'"/></dd>
-    <dd><input type="submit" class="submit" value="send message"/></dd> 
+    
+            <?php if (!empty($system['code'])){?>
+            <dd>code:<input type="text" name="code" class="text code"/><img src="image.php" id="passcode"  onclick="javascript:this.src='image.php'"/></dd>
+            <?php }?><dd><input type="submit" class="submit" value="send message"/></dd> 
   </dl>
   </form>
 </div>
